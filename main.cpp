@@ -61,7 +61,7 @@ public:
     Texture2D texture = LoadTexture("./assets/graphics/ships/green_ship.png");
     Texture2D red_bullet = LoadTexture("./assets/graphics/bullets/red_bullet.png");
     const int frame = 1;
-    float acceleration = 20.f;
+    float acceleration = 10.f;
     float speed = 5.f;
     Vector2 velocity = {0.0f, 0.0f};
     float rotation = 0.f;
@@ -76,8 +76,8 @@ public:
     Rectangle source = Rectangle{texture.width / 3.f, 0.f, texture.width / 3.f, (float)texture.height};
     Vector2 position = {100.f, 100.f};
     Rectangle dest = Rectangle{position.x, position.y, source.width *SCALE, (float)source.height *SCALE};
-    Vector2 origin = {};
     Vector2 centerOrigin = {};
+    Vector2 topLeftOrigin = {};
     vector<Bullet> bullets;
 
     Player(Vector2 pos)
@@ -88,8 +88,8 @@ public:
 
         scaledWidth = width * SCALE;
         scaledHeight = height * SCALE;
-        origin = {scaledWidth / 2.f,
-                  scaledHeight / 2.f};
+        centerOrigin = {scaledWidth / 2.f,
+                        scaledHeight / 2.f};
     }
 
     Vector2 GetMovementDirection()
@@ -125,6 +125,12 @@ public:
             rotation += rotationSpeed * dt;
         }
 
+        // rotation = Clamp(rotation, -360.0f, 360.0f);
+        if (rotation < -360.f || rotation > 360.f)
+        {
+            rotation = 0.f;
+        }
+
         Vector2 rotatedDirection = Vector2Rotate(direction, DEG2RAD * rotation);
 
         Vector2 targetVelocity = {rotatedDirection.x * speed, rotatedDirection.y * speed};
@@ -152,8 +158,8 @@ public:
 
         CheckCollisionBounds();
 
-        centerOrigin.x = position.x + (scaledWidth / 2.f);
-        centerOrigin.y = position.y + (scaledHeight / 2.f);
+        topLeftOrigin.x = position.x - scaledWidth / 2.f;
+        topLeftOrigin.y = position.y - scaledHeight / 2.f;
 
         dest.x = position.x;
         dest.y = position.y;
@@ -161,13 +167,13 @@ public:
 
     void CheckCollisionBounds()
     {
-        if (position.x <= 0)
+        if (position.x <= scaledWidth / 2.f)
         {
-            position.x = 0;
+            position.x = 0 + scaledWidth / 2.f;
         }
-        if (position.x + scaledWidth >= WINDOW_WIDTH)
+        if (position.x + scaledWidth / 2.f >= WINDOW_WIDTH)
         {
-            position.x = WINDOW_WIDTH - scaledWidth;
+            position.x = WINDOW_WIDTH - scaledWidth / 2.f;
         }
     }
 
@@ -177,7 +183,8 @@ public:
         {
             bullets[i].Draw();
         }
-        DrawTexturePro(texture, source, dest, origin, rotation, WHITE);
+        DrawTexturePro(texture, source, dest, centerOrigin, rotation, WHITE);
+        // DrawRectangleLines(topLeftOrigin.x, topLeftOrigin.y, scaledWidth, scaledHeight, RED);
     }
 
     void ShootBullet()
