@@ -60,8 +60,13 @@ class Player
 public:
     Texture2D texture = LoadTexture("./assets/graphics/ships/green_ship.png");
     Texture2D red_bullet = LoadTexture("./assets/graphics/bullets/red_bullet.png");
-    int frame = 1;
-    int speed = 250;
+    const int frame = 1;
+    float acceleration = 20.f;
+    float speed = 5.f;
+    Vector2 velocity = {0.0f, 0.0f};
+    float rotation = 0.f;
+    float rotationSpeed = 200.0f;
+
     float width = 0.f;
     float height = 0.f;
 
@@ -83,39 +88,48 @@ public:
 
         scaledWidth = width * SCALE;
         scaledHeight = height * SCALE;
+        origin = {scaledWidth / 2.f,
+                  scaledHeight / 2.f};
+    }
+
+    Vector2 GetMovementDirection()
+    {
+        Vector2 movement_direction = {};
+        // if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))
+        //     movement_direction.x = -1;
+        // if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D))
+        //     movement_direction.x = 1;
+        if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W))
+            movement_direction.y = -1;
+        if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))
+            movement_direction.y = 1;
+
+        return Vector2Normalize(movement_direction);
     }
 
     void Update(double dt)
     {
-        Vector2 direction = {};
-        if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))
-            direction.x = -1;
-        if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D))
-            direction.x = 1;
-        if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W))
-            direction.y = -1;
-        if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))
-            direction.y = 1;
 
+        Vector2 direction = GetMovementDirection(); // normalized direction vector
         if (IsKeyPressed(KEY_SPACE))
         {
             ShootBullet();
         }
 
-        direction = Vector2Normalize(direction);
+        if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))
+        {
+            rotation -= rotationSpeed * dt;
+        }
+        if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D))
+        {
+            rotation += rotationSpeed * dt;
+        }
 
-        if (direction.x < 0)
-            frame = 0;
-        if (direction.x > 0)
-            frame = 2;
-        if (direction.x == 0)
-            frame = 1;
-        source.x = width * frame;
+        Vector2 rotatedDirection = Vector2Rotate(direction, DEG2RAD * rotation);
 
-        position.x += direction.x * speed * dt;
-        position.y += direction.y * speed * dt;
-
-        // position = Vector2MoveTowards(position, Vector2{position.x + direction.x * speed * (float)dt, position.y + direction.y * speed * (float)dt}, speed * dt);
+        Vector2 targetVelocity = {rotatedDirection.x * speed, rotatedDirection.y * speed};
+        velocity = Vector2MoveTowards(velocity, targetVelocity, acceleration * dt);
+        position = Vector2Add(position, velocity);
 
         for (int i = 0; i < bullets.size(); i++)
         {
@@ -136,15 +150,13 @@ public:
             }
         }
 
-        // printf("bullets.size() %lu\n", bullets.size());
-
         CheckCollisionBounds();
-
-        dest.x = position.x;
-        dest.y = position.y;
 
         centerOrigin.x = position.x + (scaledWidth / 2.f);
         centerOrigin.y = position.y + (scaledHeight / 2.f);
+
+        dest.x = position.x;
+        dest.y = position.y;
     }
 
     void CheckCollisionBounds()
@@ -165,7 +177,7 @@ public:
         {
             bullets[i].Draw();
         }
-        DrawTexturePro(texture, source, dest, origin, 0.f, WHITE);
+        DrawTexturePro(texture, source, dest, origin, rotation, WHITE);
     }
 
     void ShootBullet()
