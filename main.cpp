@@ -18,10 +18,11 @@ public:
     Vector2 position = {0.f, 0.f};
     Rectangle dest = {};
     Vector2 origin = {};
-    int speed = 400;
-    float direction = 0.f;
+    float rotation = 0.f;
+    int speed = 800;
+    Vector2 direction = {};
 
-    Bullet(Texture txt, Vector2 pos, float dir)
+    Bullet(Texture txt, Vector2 pos, Vector2 dir, float rot)
     {
         texture = txt;
         rect = Rectangle{0.f, 0.f, (float)texture.width, (float)texture.height};
@@ -29,6 +30,7 @@ public:
         origin = {texture.width * SCALE / 2.f, texture.height * SCALE / 2.f};
         position = pos;
         direction = dir;
+        rotation = rot;
     }
 
     bool IsOutOfBounds()
@@ -42,7 +44,8 @@ public:
 
     void Update(float dt)
     {
-        position.y += direction * speed * dt;
+        position.x += direction.x * speed * dt;
+        position.y += direction.y * speed * dt;
 
         dest.x = position.x;
         dest.y = position.y;
@@ -51,7 +54,7 @@ public:
     void Draw()
     {
         // DrawTextureEx(texture, position, 0.f, SCALE, WHITE);
-        DrawTexturePro(texture, rect, dest, origin, 0.f, WHITE);
+        DrawTexturePro(texture, rect, dest, origin, rotation, WHITE);
     }
 };
 
@@ -78,6 +81,7 @@ public:
     Rectangle dest = Rectangle{position.x, position.y, source.width *SCALE, (float)source.height *SCALE};
     Vector2 centerOrigin = {};
     Vector2 topLeftOrigin = {};
+    Vector2 origin = {};
     vector<Bullet> bullets;
 
     Player(Vector2 pos)
@@ -88,8 +92,9 @@ public:
 
         scaledWidth = width * SCALE;
         scaledHeight = height * SCALE;
-        centerOrigin = {scaledWidth / 2.f,
-                        scaledHeight / 2.f};
+
+        origin = {scaledWidth / 2.f,
+                  scaledHeight / 2.f};
     }
 
     Vector2 GetMovementDirection()
@@ -161,6 +166,9 @@ public:
         topLeftOrigin.x = position.x - scaledWidth / 2.f;
         topLeftOrigin.y = position.y - scaledHeight / 2.f;
 
+        centerOrigin.x = topLeftOrigin.x + scaledWidth / 2.f;
+        centerOrigin.y = topLeftOrigin.y + scaledHeight / 2.f;
+
         dest.x = position.x;
         dest.y = position.y;
     }
@@ -183,13 +191,14 @@ public:
         {
             bullets[i].Draw();
         }
-        DrawTexturePro(texture, source, dest, centerOrigin, rotation, WHITE);
+        DrawTexturePro(texture, source, dest, origin, rotation, WHITE);
         // DrawRectangleLines(topLeftOrigin.x, topLeftOrigin.y, scaledWidth, scaledHeight, RED);
     }
 
     void ShootBullet()
     {
-        Bullet bullet = Bullet(red_bullet, centerOrigin, -1.f);
+        Vector2 bulletDirection = Vector2Rotate({0, -1}, DEG2RAD * rotation);
+        Bullet bullet = Bullet(red_bullet, centerOrigin, bulletDirection, rotation);
         bullets.push_back(bullet);
     }
 };
