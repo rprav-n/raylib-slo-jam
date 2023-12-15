@@ -10,6 +10,57 @@ const int WINDOW_HEIGHT = 512;
 const float SCALE = 4.f;
 const float BULLET_OFFSET_BOUND = 50.f;
 
+class Booster
+{
+public:
+    Texture2D texture = LoadTexture("./assets/graphics/booster/small/sheet.png");
+    int frame = 0;
+    const int maxFrame = 4;
+    float width = texture.width / maxFrame;
+    float height = (float)texture.height;
+    Rectangle source = Rectangle{0.f, 0.f, texture.width / 4.f, (float)texture.height};
+    Rectangle dest = Rectangle{100.f, 100.f, width *SCALE, height *SCALE};
+    Vector2 origin = {};
+    float updateTime = 1.f / 16.f;
+    float runningTime = 0.f;
+    float rotation = 0.f;
+    float scaledWidth = 0.f;
+    float scaledHeight = 0.f;
+
+    Booster()
+    {
+        scaledWidth = width * SCALE;
+        scaledHeight = height * SCALE;
+
+        origin = {scaledWidth / 2.f,
+                  scaledHeight / 2.f - 6.f * SCALE};
+    }
+
+    void Update(double dt, Vector2 pos, float rot)
+    {
+        rotation = rot;
+        dest.x = pos.x;
+        dest.y = pos.y;
+
+        runningTime += dt;
+        if (runningTime >= updateTime)
+        {
+            runningTime = 0.f;
+            frame++;
+            if (frame > maxFrame)
+            {
+                frame = 0;
+            }
+        }
+    }
+
+    void Draw()
+    {
+        source.x = frame * width;
+        DrawTexturePro(texture, source, dest, origin, rotation, WHITE);
+    }
+};
+
 class Bullet
 {
 public:
@@ -63,6 +114,7 @@ class Player
 public:
     Texture2D texture = LoadTexture("./assets/graphics/ships/green_ship.png");
     Texture2D red_bullet = LoadTexture("./assets/graphics/bullets/red_bullet.png");
+
     const int frame = 1;
     float acceleration = 10.f;
     float speed = 5.f;
@@ -81,8 +133,10 @@ public:
     Rectangle dest = Rectangle{position.x, position.y, source.width *SCALE, (float)source.height *SCALE};
     Vector2 centerOrigin = {};
     Vector2 topLeftOrigin = {};
+    Vector2 boosterPos = {};
     Vector2 origin = {};
     vector<Bullet> bullets;
+    Booster booster = Booster();
 
     Player(Vector2 pos)
     {
@@ -171,6 +225,10 @@ public:
 
         dest.x = position.x;
         dest.y = position.y;
+
+        boosterPos = {position.x, position.y + scaledHeight / 2.f};
+
+        booster.Update(dt, position, rotation);
     }
 
     void CheckCollisionBounds()
@@ -192,7 +250,7 @@ public:
             bullets[i].Draw();
         }
         DrawTexturePro(texture, source, dest, origin, rotation, WHITE);
-        // DrawRectangleLines(topLeftOrigin.x, topLeftOrigin.y, scaledWidth, scaledHeight, RED);
+        booster.Draw();
     }
 
     void ShootBullet()
@@ -212,7 +270,6 @@ int main()
     float bgY = 0.f;
 
     Player player = Player(Vector2{WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f});
-    // Bullet bullet = Bullet(Vector2{WINDOW_WIDTH / 2, 500.f}, -1.f);
 
     SetTargetFPS(60);
     while (!WindowShouldClose())
