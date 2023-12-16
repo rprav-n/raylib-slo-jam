@@ -11,9 +11,14 @@ void Enemy::Update(double dt, Vector2 playerPosition, float rot)
 
     dest.x = position.x;
     dest.y = position.y;
+
+    boosterPos = {position.x, position.y};
+
+    booster.Update(dt, boosterPos, rotation + 180);
 }
 
 void Enemy::Draw()
 {
+    booster.Draw();
     DrawTexturePro(texture, source, dest, origin, rotation, WHITE);
 }

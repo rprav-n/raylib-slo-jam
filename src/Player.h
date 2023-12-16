@@ -24,6 +24,7 @@ public:
 private:
     Texture2D texture = LoadTexture("./assets/graphics/ships/green_ship.png");
     Texture2D red_bullet = LoadTexture("./assets/graphics/bullets/red_bullet.png");
+    Texture2D boosterTexture = LoadTexture("./assets/graphics/booster/medium.png");
 
     float acceleration = 10.f;
     float speed = 5.f;
@@ -45,5 +46,5 @@ private:
     Vector2 boosterPos = {};
     Vector2 origin = {};
     vector<Bullet> bullets;
-    Booster booster = Booster();
+    Booster booster = Booster(boosterTexture, Vector2{0.f, 0.f});
 };

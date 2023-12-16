@@ -1,3 +1,4 @@
+#pragma once
 #include "raylib.h"
 #include "Settings.h"
 
@@ -5,18 +6,18 @@ class Booster
 {
 
 public:
-    Booster();
+    Booster(Texture2D txtr, Vector2 originOffset);
     void Update(double dt, Vector2 pos, float rot);
     void Draw();
 
 private:
-    Texture2D texture = LoadTexture("./assets/graphics/booster/small/sheet.png");
+    Texture2D texture = LoadTexture("./assets/graphics/booster/medium.png");
     int frame = 0;
     const int maxFrame = 4;
-    float width = texture.width / maxFrame;
-    float height = (float)texture.height;
-    Rectangle source = Rectangle{0.f, 0.f, texture.width / 4.f, (float)texture.height};
-    Rectangle dest = Rectangle{100.f, 100.f, width *Settings::SCALE, height *Settings::SCALE};
+    float width = 0.f;
+    float height = 0.f;
+    Rectangle source = {};
+    Rectangle dest = {};
     Vector2 origin = {};
     float updateTime = 1.f / 16.f;
     float runningTime = 0.f;

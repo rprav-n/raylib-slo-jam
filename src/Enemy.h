@@ -1,11 +1,13 @@
 #include "raylib.h"
 #include "Settings.h"
+#include "Booster.h"
 
 class Enemy
 {
 
 private:
     Texture2D texture = LoadTexture("./assets/graphics/enemies/basic_enemy.png");
+    Texture2D boosterTexture = LoadTexture("./assets/graphics/booster/small.png");
     float scaledWidth = texture.width * Settings::SCALE;
     float scaledHeight = texture.height * Settings::SCALE;
     Rectangle source = {0.f, 0.f, (float)texture.width, (float)texture.height};
@@ -14,6 +16,9 @@ private:
     Vector2 origin = {scaledWidth / 2.f, scaledHeight / 2.f};
     float speed = 100.f;
     float rotation = 0.f;
+    Vector2 boosterPos = {};
+
+    Booster booster = Booster(boosterTexture, Vector2{0.f, -6.f});
 
 public:
     void Update(double dt, Vector2 playerPosition, float rot);

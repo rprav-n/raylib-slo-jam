@@ -1,12 +1,24 @@
 #include "Booster.h"
+#include "raymath.h"
+#include <cstdio>
 
-Booster::Booster()
+Booster::Booster(Texture2D txtr, Vector2 originOffset)
 {
+    texture = txtr;
+
+    width = texture.width / (float)maxFrame;
+    height = (float)texture.height;
     scaledWidth = width * Settings::SCALE;
     scaledHeight = height * Settings::SCALE;
 
     origin = {scaledWidth / 2.f,
-              scaledHeight / 2.f - 6.f * Settings::SCALE};
+              0.f};
+    origin = Vector2Add(origin, originOffset);
+
+    printf("texture.width %d\n", texture.width);
+
+    source = Rectangle{0.f, 0.f, texture.width / (float)maxFrame, (float)texture.height};
+    dest = Rectangle{100.f, 100.f, width * Settings::SCALE, height * Settings::SCALE};
 }
 
 void Booster::Update(double dt, Vector2 pos, float rot)
