@@ -123,3 +123,19 @@ void Player::ShootBullet()
     Bullet bullet = Bullet(red_bullet, centerOrigin, bulletDirection, rotation);
     bullets.push_back(bullet);
 }
+
+Vector2 Player::GetPosition()
+{
+    return position;
+}
+
+float Player::GetRotation()
+{
+    return rotation;
+}
+Vector2 Player::GetVectorRotation()
+{
+    Vector2 direction = GetMovementDirection();
+    return Vector2Rotate(direction, DEG2RAD * rotation);
+    ;
+}

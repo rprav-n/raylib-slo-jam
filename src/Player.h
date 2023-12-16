@@ -17,6 +17,10 @@ public:
     void CheckCollisionBounds();
     void ShootBullet();
 
+    Vector2 GetPosition();
+    float GetRotation();
+    Vector2 GetVectorRotation();
+
 private:
     Texture2D texture = LoadTexture("./assets/graphics/ships/green_ship.png");
     Texture2D red_bullet = LoadTexture("./assets/graphics/bullets/red_bullet.png");
