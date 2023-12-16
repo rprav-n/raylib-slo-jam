@@ -3,7 +3,12 @@
 #include "raymath.h"
 #include <cstdio>
 
-void Enemy::Update(double dt, Vector2 playerPosition, float rot)
+Enemy::Enemy(Vector2 spawnPosition)
+{
+    position = spawnPosition;
+}
+
+void Enemy::Update(float dt, Vector2 playerPosition, float rot)
 {
     position = Vector2MoveTowards(position, playerPosition, speed * dt);
 
@@ -21,4 +26,9 @@ void Enemy::Draw()
 {
     booster.Draw();
     DrawTexturePro(texture, source, dest, origin, rotation, WHITE);
+}
+
+bool Enemy::CheckCollisionWithBullet(Rectangle bulletRect)
+{
+    return CheckCollisionRecs(dest, bulletRect);
 }

@@ -1,10 +1,10 @@
 #include <cstdio>
-#include <vector>
+
 #include "raylib.h"
 #include "raymath.h"
 #include "Settings.h"
 #include "Player.h"
-#include "Enemy.h"
+#include "EnemySpawner.h"
 
 using namespace std;
 
@@ -12,20 +12,32 @@ class Game
 {
 private:
     Player player = Player(Vector2{Settings::WINDOW_WIDTH / 2.f, Settings::WINDOW_HEIGHT / 2.f});
-    Enemy enemy = Enemy();
+    EnemySpawner enemySpawner = EnemySpawner();
 
 public:
     void Update()
     {
         const float dt = GetFrameTime();
         player.Update(dt);
-        enemy.Update(dt, player.GetPosition(), player.GetRotation());
+        enemySpawner.Update(player.GetPosition(), player.GetRotation());
+
+        for (int i = 0; i < player.bullets.size(); i++)
+        {
+            for (int j = 0; j < enemySpawner.enemies.size(); j++)
+            {
+                if (enemySpawner.enemies[j].CheckCollisionWithBullet(player.bullets[i].GetRect()))
+                {
+                    player.bullets[i].SetQueueFree(true);
+                    enemySpawner.enemies[i].SetQueueFree(true);
+                }
+            }
+        }
     }
 
     void Draw()
     {
         player.Draw();
-        enemy.Draw();
+        enemySpawner.Draw();
     }
 };
 

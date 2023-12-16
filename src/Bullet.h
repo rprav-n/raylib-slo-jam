@@ -8,6 +8,15 @@ public:
     bool IsOutOfBounds();
     void Update(float dt);
     void Draw();
+    Rectangle GetRect();
+    bool IsQueueFree()
+    {
+        return queueFree;
+    };
+    void SetQueueFree(bool val)
+    {
+        queueFree = val;
+    };
 
 private:
     Texture2D texture;
@@ -18,4 +27,5 @@ private:
     float rotation = 0.f;
     int speed = 800;
     Vector2 direction = {};
+    bool queueFree = false;
 };

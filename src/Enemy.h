@@ -1,3 +1,4 @@
+#pragma once
 #include "raylib.h"
 #include "Settings.h"
 #include "Booster.h"
@@ -20,7 +21,20 @@ private:
 
     Booster booster = Booster(boosterTexture, Vector2{0.f, -6.f});
 
+    bool queueFree = false;
+
 public:
-    void Update(double dt, Vector2 playerPosition, float rot);
+    Enemy(Vector2 spawnPosition);
+    void Update(float dt, Vector2 playerPosition, float rot);
     void Draw();
+    bool CheckCollisionWithBullet(Rectangle bulletRect);
+
+    bool IsQueueFree() const
+    {
+        return queueFree;
+    };
+    void SetQueueFree(bool val)
+    {
+        queueFree = val;
+    };
 };

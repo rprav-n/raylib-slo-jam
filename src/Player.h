@@ -1,3 +1,4 @@
+#pragma once
 #include "raylib.h"
 #include "Bullet.h"
 #include "Booster.h"
@@ -20,6 +21,8 @@ public:
     Vector2 GetPosition();
     float GetRotation();
     Vector2 GetVectorRotation();
+
+    vector<Bullet> bullets;
 
 private:
     Texture2D texture = LoadTexture("./assets/graphics/ships/green_ship.png");
@@ -45,6 +48,5 @@ private:
     Vector2 topLeftOrigin = {};
     Vector2 boosterPos = {};
     Vector2 origin = {};
-    vector<Bullet> bullets;
     Booster booster = Booster(boosterTexture, Vector2{0.f, 0.f});
 };

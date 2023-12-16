@@ -69,7 +69,7 @@ void Player::Update(double dt)
     for (int i = 0; i < bullets.size();)
     {
         Bullet b = bullets[i];
-        if (b.IsOutOfBounds())
+        if (b.IsQueueFree())
         {
             bullets.erase(bullets.begin() + i);
         }

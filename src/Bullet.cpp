@@ -36,3 +36,8 @@ void Bullet::Draw()
     // DrawTextureEx(texture, position, 0.f, SCALE, WHITE);
     DrawTexturePro(texture, rect, dest, origin, rotation, WHITE);
 }
+
+Rectangle Bullet::GetRect()
+{
+    return dest;
+}
