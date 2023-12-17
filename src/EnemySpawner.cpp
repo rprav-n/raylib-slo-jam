@@ -32,7 +32,20 @@ void EnemySpawner::Update(Vector2 playerPosition, float playerRotation)
 
 void EnemySpawner::SpawnEnemy()
 {
-    Vector2 spawnPosition = {(float)GetRandomValue(0, Settings::WINDOW_WIDTH), (float)GetRandomValue(0, Settings::WINDOW_HEIGHT)};
+    Vector2 spawnPosition = {};
+    const float margin = 100.0f;
+
+    if (GetRandomValue(0, 1) == 0)
+    {
+        spawnPosition.x = (GetRandomValue(0, 1) == 0) ? -margin : Settings::WINDOW_WIDTH + margin;
+        spawnPosition.y = GetRandomValue(-margin, Settings::WINDOW_HEIGHT + margin);
+    }
+    else
+    {
+        spawnPosition.x = GetRandomValue(-margin, Settings::WINDOW_WIDTH + margin);
+        spawnPosition.y = (GetRandomValue(0, 1) == 0) ? -margin : Settings::WINDOW_HEIGHT + margin;
+    }
+
     Enemy enemy = Enemy(spawnPosition);
     enemies.push_back(enemy);
 }

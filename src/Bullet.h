@@ -18,12 +18,17 @@ public:
         queueFree = val;
     };
 
+    Vector2 centerPoint = {};
+    float radius = 5.f;
+
 private:
     Texture2D texture;
     Rectangle rect = {};
     Vector2 position = {0.f, 0.f};
     Rectangle dest = {};
     Vector2 origin = {};
+    float scaledWidth = 0.f;
+    float scaledHeight = 0.f;
     float rotation = 0.f;
     int speed = 800;
     Vector2 direction = {};

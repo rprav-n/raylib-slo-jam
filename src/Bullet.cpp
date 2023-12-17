@@ -4,9 +4,12 @@
 Bullet::Bullet(Texture txt, Vector2 pos, Vector2 dir, float rot)
 {
     texture = txt;
+    scaledWidth = txt.width * Settings::SCALE;
+    scaledHeight = txt.height * Settings::SCALE;
     rect = Rectangle{0.f, 0.f, (float)texture.width, (float)texture.height};
     dest = Rectangle{0.f, 0.f, texture.width * Settings::SCALE, texture.height * Settings::SCALE};
-    origin = {texture.width * Settings::SCALE / 2.f, texture.height * Settings::SCALE / 2.f};
+
+    origin = {scaledWidth / 2.f, scaledHeight / 2.f};
     position = pos;
     direction = dir;
     rotation = rot;
@@ -29,11 +32,12 @@ void Bullet::Update(float dt)
 
     dest.x = position.x;
     dest.y = position.y;
+
+    centerPoint = position;
 }
 
 void Bullet::Draw()
 {
-    // DrawTextureEx(texture, position, 0.f, SCALE, WHITE);
     DrawTexturePro(texture, rect, dest, origin, rotation, WHITE);
 }
 

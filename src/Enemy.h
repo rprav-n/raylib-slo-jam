@@ -2,9 +2,6 @@
 #include "raylib.h"
 #include "Settings.h"
 #include "Booster.h"
-#include <memory>
-
-using namespace std;
 
 class Enemy
 {
@@ -22,8 +19,7 @@ private:
     float rotation = 0.f;
     Vector2 boosterPos = {};
 
-    // Booster booster = Booster(boosterTexture, Vector2{0.f, -6.f});
-    shared_ptr<Booster> booster;
+    Booster booster = Booster(boosterTexture, Vector2{0.f, -6.f});
 
     bool queueFree = false;
 
@@ -31,7 +27,8 @@ public:
     Enemy(Vector2 spawnPosition);
     void Update(float dt, Vector2 playerPosition, float rot);
     void Draw();
-    bool CheckCollisionWithBullet(Rectangle bulletRect);
+
+    Vector2 GetPosition();
 
     bool IsQueueFree() const
     {
@@ -41,4 +38,7 @@ public:
     {
         queueFree = val;
     };
+
+    Vector2 centerPoint = {};
+    float radius = 10.f;
 };

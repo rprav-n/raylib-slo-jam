@@ -17,6 +17,8 @@ private:
     EnemySpawner enemySpawner = EnemySpawner();
     vector<Explosion> explosions;
 
+    Texture2D explosionTexture = LoadTexture("./assets/graphics/explosion/red.png");
+
 public:
     void Update()
     {
@@ -26,22 +28,58 @@ public:
 
         for (int i = 0; i < player.bullets.size(); i++)
         {
+            Bullet b = player.bullets[i];
             for (int j = 0; j < enemySpawner.enemies.size(); j++)
             {
-                if (enemySpawner.enemies[j].CheckCollisionWithBullet(player.bullets[i].GetRect()))
+                Enemy e = enemySpawner.enemies[j];
+                if (CheckCollisionCircles(b.centerPoint, b.radius, e.centerPoint, e.radius))
                 {
                     player.bullets[i].SetQueueFree(true);
-                    enemySpawner.enemies[i].SetQueueFree(true);
-                    break;
+                    enemySpawner.enemies[j].SetQueueFree(true);
+                    SpanwExplosion(e.GetPosition());
                 }
             }
         }
+
+        for (int i = 0; i < explosions.size(); i++)
+        {
+            explosions[i].Update(dt);
+        }
+
+        RemoveExplosion();
     }
 
     void Draw()
     {
         player.Draw();
         enemySpawner.Draw();
+
+        for (int i = 0; i < explosions.size(); i++)
+        {
+            explosions[i].Draw();
+        }
+    }
+
+    void SpanwExplosion(Vector2 position)
+    {
+        Explosion explosion = Explosion(explosionTexture, position);
+        explosions.push_back(explosion);
+    }
+
+    void RemoveExplosion()
+    {
+        for (int i = 0; i < explosions.size();)
+        {
+            Explosion e = explosions[i];
+            if (e.IsQueueFree())
+            {
+                explosions.erase(explosions.begin() + i);
+            }
+            else
+            {
+                ++i;
+            }
+        }
     }
 };
 

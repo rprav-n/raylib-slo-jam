@@ -105,6 +105,15 @@ void Player::CheckCollisionBounds()
     {
         position.x = Settings::WINDOW_WIDTH - scaledWidth / 2.f;
     }
+
+    if (position.y <= scaledHeight / 2.f)
+    {
+        position.y = 0 + scaledHeight / 2.f;
+    }
+    if (position.y + scaledHeight / 2.f >= Settings::WINDOW_WIDTH)
+    {
+        position.y = Settings::WINDOW_WIDTH - scaledHeight / 2.f;
+    }
 }
 
 void Player::Draw()

@@ -13,7 +13,7 @@ public:
 private:
     Texture2D texture = LoadTexture("./assets/graphics/booster/medium.png");
     int frame = 0;
-    const int maxFrame = 4;
+    int maxFrame = 4;
     float width = 0.f;
     float height = 0.f;
     Rectangle source = {};

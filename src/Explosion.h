@@ -1,26 +1,35 @@
+#pragma once
 #include "raylib.h"
 #include "Settings.h"
 
 class Explosion
 {
 public:
-    void Update(float dt, Vector2 pos);
+    Explosion(Texture2D txtr, Vector2 pos);
+    void Update(float dt);
     void Draw();
 
+    bool IsQueueFree()
+    {
+        return queueFree;
+    }
+
 private:
-    Texture2D texture = LoadTexture("./assets/graphics/explosion/red.png");
-    const int maxFrame = 3;
+    Texture2D texture;
+    int maxFrame = 3;
     int frame = 0;
-    const float updateTime = 1.f / 12.f;
+    float updateTime = 1.f / 12.f;
     float runningTime = 0.f;
-    float width = texture.width / 3.f;
-    float height = (float)texture.height;
+    float width = 0.f;
+    float height = 0.f;
 
-    float scaledWidth = width * Settings::SCALE;
-    float scaledHeight = height * Settings::SCALE;
+    float scaledWidth = 0.f;
+    float scaledHeight = 0.f;
 
-    Rectangle source = Rectangle{0.f, 0.f, width, height};
-    Rectangle dest = Rectangle{0.f, 0.f, scaledWidth, scaledHeight};
+    Rectangle source = {};
+    Rectangle dest = {};
 
-    Vector2 origin = {width / 2.f, height / 2.f};
+    Vector2 origin = {};
+
+    bool queueFree = false;
 };
