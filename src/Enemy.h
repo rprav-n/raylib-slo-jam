@@ -2,6 +2,9 @@
 #include "raylib.h"
 #include "Settings.h"
 #include "Booster.h"
+#include <memory>
+
+using namespace std;
 
 class Enemy
 {
@@ -19,7 +22,8 @@ private:
     float rotation = 0.f;
     Vector2 boosterPos = {};
 
-    Booster booster = Booster(boosterTexture, Vector2{0.f, -6.f});
+    // Booster booster = Booster(boosterTexture, Vector2{0.f, -6.f});
+    shared_ptr<Booster> booster;
 
     bool queueFree = false;
 

@@ -5,6 +5,8 @@
 #include "Settings.h"
 #include "Player.h"
 #include "EnemySpawner.h"
+#include "Explosion.h"
+#include <vector>
 
 using namespace std;
 
@@ -13,6 +15,7 @@ class Game
 private:
     Player player = Player(Vector2{Settings::WINDOW_WIDTH / 2.f, Settings::WINDOW_HEIGHT / 2.f});
     EnemySpawner enemySpawner = EnemySpawner();
+    vector<Explosion> explosions;
 
 public:
     void Update()
@@ -29,6 +32,7 @@ public:
                 {
                     player.bullets[i].SetQueueFree(true);
                     enemySpawner.enemies[i].SetQueueFree(true);
+                    break;
                 }
             }
         }

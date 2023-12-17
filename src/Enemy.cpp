@@ -6,6 +6,7 @@
 Enemy::Enemy(Vector2 spawnPosition)
 {
     position = spawnPosition;
+    booster = make_shared<Booster>(boosterTexture, Vector2{0.f, -6.f});
 }
 
 void Enemy::Update(float dt, Vector2 playerPosition, float rot)
@@ -19,12 +20,14 @@ void Enemy::Update(float dt, Vector2 playerPosition, float rot)
 
     boosterPos = {position.x, position.y};
 
-    booster.Update(dt, boosterPos, rotation + 180);
+    // booster.Update(dt, boosterPos, rotation + 180);
+    booster->Update(dt, boosterPos, rotation + 180);
 }
 
 void Enemy::Draw()
 {
-    booster.Draw();
+    // booster.Draw();
+    booster->Draw();
     DrawTexturePro(texture, source, dest, origin, rotation, WHITE);
 }
 

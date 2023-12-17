@@ -7,7 +7,7 @@ void EnemySpawner::Update(Vector2 playerPosition, float playerRotation)
 
     if (currentTimer >= spawnTime)
     {
-        currentTimer = -100.f;
+        currentTimer = 0.f;
         SpawnEnemy();
     }
 
@@ -21,7 +21,7 @@ void EnemySpawner::Update(Vector2 playerPosition, float playerRotation)
         Enemy e = enemies[i];
         if (e.IsQueueFree())
         {
-            // enemies.erase(enemies.begin() + i);
+            enemies.erase(enemies.begin() + i);
         }
         else
         {
