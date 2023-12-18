@@ -93,6 +93,8 @@ void Player::Update(double dt)
     boosterPos = {position.x, position.y + scaledHeight / 2.f};
 
     booster.Update(dt, position, rotation);
+
+    centerPoint = position;
 }
 
 void Player::CheckCollisionBounds()

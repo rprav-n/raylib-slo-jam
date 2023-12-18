@@ -35,9 +35,22 @@ public:
                 if (CheckCollisionCircles(b.centerPoint, b.radius, e.centerPoint, e.radius))
                 {
                     player.bullets[i].SetQueueFree(true);
-                    enemySpawner.enemies[j].SetQueueFree(true);
                     SpanwExplosion(e.GetPosition());
+                    enemySpawner.enemies[j].SetQueueFree(true);
                 }
+            }
+        }
+
+        for (int i = 0; i < enemySpawner.enemies.size(); i++)
+        {
+            Enemy e = enemySpawner.enemies[i];
+            if (CheckCollisionCircles(player.centerPoint, player.radius, e.centerPoint, e.radius))
+            {
+                // TODO
+                // Reduce player health
+                // Reduce enemy health
+                SpanwExplosion(e.GetPosition());
+                enemySpawner.enemies[i].SetQueueFree(true);
             }
         }
 

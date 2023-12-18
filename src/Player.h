@@ -24,6 +24,9 @@ public:
 
     vector<Bullet> bullets;
 
+    Vector2 centerPoint = {};
+    float radius = 12.f;
+
 private:
     Texture2D texture = LoadTexture("./assets/graphics/ships/green_ship.png");
     Texture2D red_bullet = LoadTexture("./assets/graphics/bullets/red_bullet.png");
