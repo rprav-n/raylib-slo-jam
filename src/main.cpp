@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "EnemySpawner.h"
 #include "Explosion.h"
+#include "SoundManager.h"
 #include <vector>
 
 using namespace std;
@@ -18,6 +19,8 @@ private:
     vector<Explosion> explosions;
 
     Texture2D explosionTexture = LoadTexture("./assets/graphics/explosion/red.png");
+
+    SoundManager soundManager = SoundManager();
 
 public:
     void Update()
@@ -37,10 +40,12 @@ public:
                     player.bullets[i].SetQueueFree(true);
                     SpanwExplosion(e.GetPosition());
                     enemySpawner.enemies[j].SetQueueFree(true);
+                    soundManager.PlayExplosionSfx();
                 }
             }
         }
 
+        // when player and enemy ship collides
         for (int i = 0; i < enemySpawner.enemies.size(); i++)
         {
             Enemy e = enemySpawner.enemies[i];
@@ -51,6 +56,7 @@ public:
                 // Reduce enemy health
                 SpanwExplosion(e.GetPosition());
                 enemySpawner.enemies[i].SetQueueFree(true);
+                soundManager.PlayExplosionSfx();
             }
         }
 
@@ -99,6 +105,7 @@ public:
 int main()
 {
     InitWindow(Settings::WINDOW_WIDTH, Settings::WINDOW_HEIGHT, "Edge Of Void");
+    InitAudioDevice();
 
     Texture2D bg = LoadTexture("./assets/graphics/environment/bg.png");
     const int bgMoveSpeed = 200;
@@ -134,6 +141,7 @@ int main()
     }
 
     UnloadTexture(bg);
+    CloseAudioDevice();
     CloseWindow();
 
     return 0;

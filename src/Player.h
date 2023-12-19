@@ -27,10 +27,13 @@ public:
     Vector2 centerPoint = {};
     float radius = 12.f;
 
+    void PlayLaserSfx();
+
 private:
     Texture2D texture = LoadTexture("./assets/graphics/ships/green_ship.png");
     Texture2D red_bullet = LoadTexture("./assets/graphics/bullets/red_bullet.png");
     Texture2D boosterTexture = LoadTexture("./assets/graphics/booster/medium.png");
+    Sound laserSfx = LoadSound("./assets/sounds/laser_shoot.wav");
 
     float acceleration = 10.f;
     float speed = 5.f;

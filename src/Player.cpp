@@ -36,6 +36,7 @@ void Player::Update(double dt)
     Vector2 direction = GetMovementDirection(); // normalized direction vector
     if (IsKeyPressed(KEY_SPACE))
     {
+        PlayLaserSfx();
         ShootBullet();
     }
 
@@ -144,9 +145,15 @@ float Player::GetRotation()
 {
     return rotation;
 }
+
 Vector2 Player::GetVectorRotation()
 {
     Vector2 direction = GetMovementDirection();
     return Vector2Rotate(direction, DEG2RAD * rotation);
     ;
 }
+
+void Player::PlayLaserSfx()
+{
+    PlaySound(laserSfx);
+};
