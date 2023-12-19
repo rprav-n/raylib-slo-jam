@@ -25,6 +25,7 @@ private:
 public:
     void Update()
     {
+        soundManager.UpdateMusic();
         const float dt = GetFrameTime();
         player.Update(dt);
         enemySpawner.Update(player.GetPosition(), player.GetRotation());
