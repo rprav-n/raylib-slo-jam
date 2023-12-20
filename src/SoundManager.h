@@ -11,12 +11,11 @@ public:
     SoundManager()
     {
         SetMusicVolume(bgMusic, 0.1f);
-        PlayMusicStream(bgMusic);
+        // PlayMusicStream(bgMusic);
     };
 
-    void UpdateMusic()
-    {
-        UpdateMusicStream(bgMusic);
+    void UpdateMusic(){
+        // UpdateMusicStream(bgMusic);
     };
 
     void PlayExplosionSfx()

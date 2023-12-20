@@ -40,6 +40,11 @@ void Player::Update(double dt)
         ShootBullet();
     }
 
+    if (IsKeyPressed(KEY_LEFT_SHIFT))
+    {
+        isDashing = true;
+    }
+
     if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))
     {
         rotation -= rotationSpeed * dt;
@@ -58,7 +63,22 @@ void Player::Update(double dt)
     Vector2 rotatedDirection = Vector2Rotate(direction, DEG2RAD * rotation);
 
     Vector2 targetVelocity = {rotatedDirection.x * speed, rotatedDirection.y * speed};
-    velocity = Vector2MoveTowards(velocity, targetVelocity, acceleration * dt);
+
+    // Shift to dash
+    if (isDashing)
+    {
+        // TODO
+        // Implement dash shaders
+        velocity = {};
+        targetVelocity = Vector2Scale(targetVelocity, 100);
+        velocity = Vector2MoveTowards(velocity, targetVelocity, 50 * acceleration * dt);
+        isDashing = false;
+    }
+    else
+    {
+        velocity = Vector2MoveTowards(velocity, targetVelocity, acceleration * dt);
+    }
+
     position = Vector2Add(position, velocity);
 
     for (int i = 0; i < bullets.size(); i++)

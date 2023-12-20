@@ -26,6 +26,7 @@ public:
 
     Vector2 centerPoint = {};
     float radius = 12.f;
+    bool isDashing = false;
 
     void PlayLaserSfx();
 
