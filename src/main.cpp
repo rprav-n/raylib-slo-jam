@@ -7,6 +7,7 @@
 #include "EnemySpawner.h"
 #include "Explosion.h"
 #include "SoundManager.h"
+#include "Asteroid.h"
 #include <vector>
 
 using namespace std;
@@ -19,12 +20,16 @@ private:
     vector<Explosion> explosions;
 
     Texture2D explosionTexture = LoadTexture("./assets/graphics/explosion/red.png");
+    Texture2D bigAsteroidTexture = LoadTexture("./assets/graphics/environment/asteroid_big.png");
 
     SoundManager soundManager = SoundManager();
+
+    Asteroid asteroid = Asteroid(bigAsteroidTexture, Vector2{0.f, 0.f}, Vector2{1.f, 1.f});
 
 public:
     void Update()
     {
+        asteroid.Update();
         soundManager.UpdateMusic();
         const float dt = GetFrameTime();
         player.Update(dt);
@@ -71,13 +76,15 @@ public:
 
     void Draw()
     {
-        player.Draw();
+        asteroid.Draw();
         enemySpawner.Draw();
 
         for (int i = 0; i < explosions.size(); i++)
         {
             explosions[i].Draw();
         }
+
+        player.Draw();
     }
 
     void SpanwExplosion(Vector2 position)
