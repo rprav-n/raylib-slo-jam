@@ -11,6 +11,8 @@ Asteroid::Asteroid(Texture2D txtr, Vector2 pos, Vector2 dir)
     source = Rectangle{0.f, 0.f, (float)texture.width, (float)texture.height};
     dest = Rectangle{0.f, 0.f, scaledWidth, scaledHeight};
     direction = dir;
+    speed = (float)GetRandomValue(50, 200);
+    rotSpeed = (float)GetRandomValue(0, 3);
 }
 
 void Asteroid::Update()
@@ -23,8 +25,8 @@ void Asteroid::Update()
     dest.x = position.x;
     dest.y = position.y;
 
-    rotation += 1;
-    if (rotation >= 360)
+    rotation += rotSpeed;
+    if (rotation >= 360 || rotation <= -360)
     {
         rotation = 0;
     }

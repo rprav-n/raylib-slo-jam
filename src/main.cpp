@@ -8,6 +8,7 @@
 #include "Explosion.h"
 #include "SoundManager.h"
 #include "Asteroid.h"
+#include "AsteroidSpawner.h"
 #include <vector>
 
 using namespace std;
@@ -15,25 +16,26 @@ using namespace std;
 class Game
 {
 private:
-    Player player = Player(Vector2{Settings::WINDOW_WIDTH / 2.f, Settings::WINDOW_HEIGHT / 2.f});
-    EnemySpawner enemySpawner = EnemySpawner();
+    Texture2D explosionTexture = LoadTexture("./assets/graphics/explosion/red.png");
     vector<Explosion> explosions;
 
-    Texture2D explosionTexture = LoadTexture("./assets/graphics/explosion/red.png");
-    Texture2D bigAsteroidTexture = LoadTexture("./assets/graphics/environment/asteroid_big.png");
+    Player player = Player(Vector2{Settings::WINDOW_WIDTH / 2.f, Settings::WINDOW_HEIGHT / 2.f});
 
+    EnemySpawner enemySpawner = EnemySpawner();
+    AsteroidSpawner asteroidSpawner = AsteroidSpawner();
     SoundManager soundManager = SoundManager();
-
-    Asteroid asteroid = Asteroid(bigAsteroidTexture, Vector2{0.f, 0.f}, Vector2{1.f, 1.f});
 
 public:
     void Update()
     {
-        asteroid.Update();
-        soundManager.UpdateMusic();
         const float dt = GetFrameTime();
+
+        soundManager.UpdateMusic();
+
         player.Update(dt);
+
         enemySpawner.Update(player.GetPosition(), player.GetRotation());
+        asteroidSpawner.Update();
 
         for (int i = 0; i < player.bullets.size(); i++)
         {
@@ -76,7 +78,7 @@ public:
 
     void Draw()
     {
-        asteroid.Draw();
+        asteroidSpawner.Draw();
         enemySpawner.Draw();
 
         for (int i = 0; i < explosions.size(); i++)

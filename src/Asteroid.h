@@ -1,3 +1,4 @@
+#pragma once
 #include "raylib.h"
 #include "Settings.h"
 #include <cstdio>
@@ -16,6 +17,7 @@ private:
 
     float rotation = 0.f;
     float speed = 100.f;
+    float rotSpeed = 1.f;
 
 public:
     Asteroid(Texture2D txtr, Vector2 pos, Vector2 dir);
