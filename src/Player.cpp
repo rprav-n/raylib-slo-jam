@@ -147,6 +147,10 @@ void Player::Draw()
     }
     DrawTexturePro(texture, source, dest, origin, rotation, WHITE);
     booster.Draw();
+
+    DrawTextureEx(heartTexture, Vector2{5.f, 10.f}, 0.f, Settings::SCALE / 2, WHITE);
+    DrawRectangleV(rectBoxPos, rectBoxSize, pink);
+    DrawTextureEx(healthProgressTexture, healthProgressPos, 0.f, Settings::SCALE, WHITE);
 }
 
 void Player::ShootBullet()
@@ -170,10 +174,14 @@ Vector2 Player::GetVectorRotation()
 {
     Vector2 direction = GetMovementDirection();
     return Vector2Rotate(direction, DEG2RAD * rotation);
-    ;
 }
 
 void Player::PlayLaserSfx()
 {
     PlaySound(laserSfx);
 };
+
+void Player::UpdatePlayerHealthProgressWidth()
+{
+    rectBoxSize.x -= 10;
+}

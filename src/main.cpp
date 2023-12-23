@@ -9,7 +9,11 @@
 #include "SoundManager.h"
 #include "Asteroid.h"
 #include "AsteroidSpawner.h"
+#include "MainScreen.h"
 #include <vector>
+
+#define RAYGUI_IMPLEMENTATION
+#include "raygui.h"
 
 using namespace std;
 
@@ -25,13 +29,49 @@ private:
     AsteroidSpawner asteroidSpawner = AsteroidSpawner();
     SoundManager soundManager = SoundManager();
 
+    MainScreen mainScreen = MainScreen();
+    bool isGameStarted = false;
+
+    Font pixelFont = LoadFont("./assets/fonts/kenney_pixel.ttf");
+
 public:
     void Update()
     {
-        const float dt = GetFrameTime();
-
         soundManager.UpdateMusic();
 
+        if (isGameStarted)
+        {
+            GameStarted();
+        }
+        else
+        {
+            mainScreen.Update();
+        }
+    }
+
+    void Draw()
+    {
+        if (isGameStarted)
+        {
+            asteroidSpawner.Draw();
+            enemySpawner.Draw();
+
+            for (int i = 0; i < explosions.size(); i++)
+            {
+                explosions[i].Draw();
+            }
+
+            player.Draw();
+        }
+        else
+        {
+            mainScreen.Draw();
+        }
+    }
+
+    void GameStarted()
+    {
+        const float dt = GetFrameTime();
         player.Update(dt);
 
         enemySpawner.Update(player.GetPosition(), player.GetRotation());
@@ -59,6 +99,7 @@ public:
             Enemy e = enemySpawner.enemies[i];
             if (CheckCollisionCircles(player.centerPoint, player.radius, e.centerPoint, e.radius))
             {
+                player.UpdatePlayerHealthProgressWidth();
                 // TODO
                 // Reduce player health
                 // Reduce enemy health
@@ -74,19 +115,6 @@ public:
         }
 
         RemoveExplosion();
-    }
-
-    void Draw()
-    {
-        asteroidSpawner.Draw();
-        enemySpawner.Draw();
-
-        for (int i = 0; i < explosions.size(); i++)
-        {
-            explosions[i].Draw();
-        }
-
-        player.Draw();
     }
 
     void SpanwExplosion(Vector2 position)
@@ -145,7 +173,7 @@ int main()
         game.Update();
         game.Draw();
 
-        DrawFPS(10, 10);
+        DrawFPS(10, Settings::WINDOW_HEIGHT - 20);
 
         EndDrawing();
     }

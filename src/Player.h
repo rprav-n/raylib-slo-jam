@@ -29,11 +29,14 @@ public:
     bool isDashing = false;
 
     void PlayLaserSfx();
+    void UpdatePlayerHealthProgressWidth();
 
 private:
     Texture2D texture = LoadTexture("./assets/graphics/ships/green_ship.png");
     Texture2D red_bullet = LoadTexture("./assets/graphics/bullets/red_bullet.png");
     Texture2D boosterTexture = LoadTexture("./assets/graphics/booster/medium.png");
+    Texture2D healthProgressTexture = LoadTexture("./assets/graphics/ui/health_ui.png");
+    Texture2D heartTexture = LoadTexture("./assets/graphics/ui/heart.png");
     Sound laserSfx = LoadSound("./assets/sounds/laser_shoot.wav");
 
     float acceleration = 10.f;
@@ -56,4 +59,12 @@ private:
     Vector2 boosterPos = {};
     Vector2 origin = {};
     Booster booster = Booster(boosterTexture, Vector2{0.f, 0.f});
+
+    // Health progress
+    Vector2 healthProgressPos = Vector2{heartTexture.width * 2.f + 10.f, 10.f};
+    Vector2 rectBoxPos = Vector2{healthProgressPos.x + 4.f, healthProgressPos.y};
+    Vector2 rectBoxSize = Vector2{healthProgressTexture.width * Settings::SCALE - 8.f, healthProgressTexture.height *Settings::SCALE};
+
+    // Colors
+    Color pink = GetColor(0xdb41c3ff);
 };
