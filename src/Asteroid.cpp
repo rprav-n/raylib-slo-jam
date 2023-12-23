@@ -1,7 +1,7 @@
 #include "Asteroid.h"
 #include "raymath.h"
 
-Asteroid::Asteroid(Texture2D txtr, Vector2 pos, Vector2 dir)
+Asteroid::Asteroid(Texture2D txtr, Vector2 pos, Vector2 dir, int t)
 {
     texture = txtr;
     position = pos;
@@ -13,6 +13,7 @@ Asteroid::Asteroid(Texture2D txtr, Vector2 pos, Vector2 dir)
     direction = dir;
     speed = (float)GetRandomValue(50, 200);
     rotSpeed = (float)GetRandomValue(0, 3);
+    type = t;
 }
 
 void Asteroid::Update()

@@ -30,7 +30,7 @@ public:
 
     Vector2 GetPosition();
 
-    bool IsQueueFree() const
+    bool IsQueueFree()
     {
         return queueFree;
     };

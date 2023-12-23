@@ -13,11 +13,12 @@ public:
     void SpawnAsteroid();
     void Update();
     void Draw();
+    void CheckBounds();
     vector<Asteroid> asteroids;
 
 private:
     Texture2D bigAsteroidTexture = LoadTexture("./assets/graphics/environment/asteroid_big.png");
-    float spawnTime = 1.f;
+    Texture2D smallAsteroidTexture = LoadTexture("./assets/graphics/environment/asteroid_small.png");
+    float spawnTime = 3.f;
     float currentTimer = 0.f;
-    bool IsQueueFree = false;
 };
