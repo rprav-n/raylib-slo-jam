@@ -5,6 +5,7 @@
 #include "Enemy.h"
 
 #include "Settings.h"
+#include <vector>
 
 using namespace std;
 
@@ -19,4 +20,8 @@ public:
 private:
     float spawnTime = 2.f;
     float currentTimer = 0.f;
+    Texture2D basicEnemy1 = LoadTexture("./assets/graphics/enemies/basic_enemy_1.png");
+    Texture2D basicEnemy2 = LoadTexture("./assets/graphics/enemies/basic_enemy_2.png");
+    Texture2D basicEnemy3 = LoadTexture("./assets/graphics/enemies/basic_enemy_3.png");
+    vector<Texture2D> enemyTextures = {basicEnemy1, basicEnemy2, basicEnemy3};
 };

@@ -46,7 +46,26 @@ void EnemySpawner::SpawnEnemy()
         spawnPosition.y = (GetRandomValue(0, 1) == 0) ? -margin : Settings::WINDOW_HEIGHT + margin;
     }
 
-    Enemy enemy = Enemy(spawnPosition);
+    int randomEnemyIndex = GetRandomValue(0, enemyTextures.size() - 1);
+    float speed = 100.f;
+
+    switch (randomEnemyIndex)
+    {
+    case 0: // basic_enemy_1
+        speed = 100.f;
+        break;
+    case 1: // basic_enemy_2
+        speed = 125.f;
+        break;
+    case 2: // basic_enemy_3
+        speed = 100.f;
+        break;
+
+    default:
+        break;
+    }
+
+    Enemy enemy = Enemy(enemyTextures[randomEnemyIndex], spawnPosition, speed, randomEnemyIndex);
     enemies.push_back(enemy);
 }
 

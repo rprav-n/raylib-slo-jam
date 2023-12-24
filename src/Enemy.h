@@ -7,7 +7,7 @@ class Enemy
 {
 
 private:
-    Texture2D texture = LoadTexture("./assets/graphics/enemies/basic_enemy.png");
+    Texture2D texture = LoadTexture("./assets/graphics/enemies/basic_enemy_1.png");
     Texture2D boosterTexture = LoadTexture("./assets/graphics/booster/small.png");
     float scaledWidth = texture.width * Settings::SCALE;
     float scaledHeight = texture.height * Settings::SCALE;
@@ -23,10 +23,20 @@ private:
 
     bool queueFree = false;
 
+    int enemyType = 0;
+    int health = 1;
+
+    // flicker variables
+    float flickerDuration = 1.f;
+    float flickerTimer = 0.0f;
+    bool isFlickering = false;
+
 public:
-    Enemy(Vector2 spawnPosition);
+    Enemy(Texture2D txtr, Vector2 spawnPosition, float spd, int type);
     void Update(float dt, Vector2 playerPosition, float rot);
     void Draw();
+    void ReduceHealth();
+    void FlickerEnemy();
 
     Vector2 GetPosition();
 
@@ -37,6 +47,11 @@ public:
     void SetQueueFree(bool val)
     {
         queueFree = val;
+    };
+
+    int GetHealth()
+    {
+        return health;
     };
 
     Vector2 centerPoint = {};

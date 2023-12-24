@@ -12,9 +12,6 @@
 #include "MainScreen.h"
 #include <vector>
 
-#define RAYGUI_IMPLEMENTATION
-#include "raygui.h"
-
 using namespace std;
 
 class Game
@@ -30,16 +27,13 @@ private:
     SoundManager soundManager = SoundManager();
 
     MainScreen mainScreen = MainScreen();
-    bool isGameStarted = false;
-
-    Font pixelFont = LoadFont("./assets/fonts/kenney_pixel.ttf");
 
 public:
     void Update()
     {
         soundManager.UpdateMusic();
 
-        if (isGameStarted)
+        if (mainScreen.isPlayPressed())
         {
             GameStarted();
         }
@@ -51,7 +45,7 @@ public:
 
     void Draw()
     {
-        if (isGameStarted)
+        if (mainScreen.isPlayPressed())
         {
             asteroidSpawner.Draw();
             enemySpawner.Draw();
@@ -86,9 +80,14 @@ public:
                 if (CheckCollisionCircles(b.centerPoint, b.radius, e.centerPoint, e.radius))
                 {
                     player.bullets[i].SetQueueFree(true);
-                    SpanwExplosion(e.GetPosition());
-                    enemySpawner.enemies[j].SetQueueFree(true);
-                    soundManager.PlayExplosionSfx();
+                    enemySpawner.enemies[j].ReduceHealth();
+
+                    if (enemySpawner.enemies[j].GetHealth() == 0)
+                    {
+                        enemySpawner.enemies[j].SetQueueFree(true);
+                        SpanwExplosion(e.GetPosition());
+                        soundManager.PlayExplosionSfx();
+                    }
                 }
             }
         }

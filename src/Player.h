@@ -67,4 +67,9 @@ private:
 
     // Colors
     Color pink = GetColor(0xdb41c3ff);
+
+    //
+    int level = 0;
+    int experience = 0;
+    int maxExperience = 20;
 };
