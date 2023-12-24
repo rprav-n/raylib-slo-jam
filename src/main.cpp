@@ -10,6 +10,8 @@
 #include "Asteroid.h"
 #include "AsteroidSpawner.h"
 #include "MainScreen.h"
+#include "Transition.h"
+#include "AbilityScreen.h"
 #include <vector>
 
 using namespace std;
@@ -28,6 +30,9 @@ private:
 
     MainScreen mainScreen = MainScreen();
 
+    Transition transition = Transition(1.f);
+    AbilityScreen abilityScreen = AbilityScreen();
+
 public:
     void Update()
     {
@@ -35,7 +40,14 @@ public:
 
         if (mainScreen.isPlayPressed())
         {
-            GameStarted();
+            if (transition.IsComplete())
+            {
+                GameStarted();
+            }
+            else
+            {
+                transition.Update();
+            }
         }
         else
         {
@@ -47,15 +59,28 @@ public:
     {
         if (mainScreen.isPlayPressed())
         {
-            asteroidSpawner.Draw();
-            enemySpawner.Draw();
 
-            for (int i = 0; i < explosions.size(); i++)
+            if (transition.IsComplete())
             {
-                explosions[i].Draw();
-            }
+                asteroidSpawner.Draw();
+                enemySpawner.Draw();
 
-            player.Draw();
+                for (int i = 0; i < explosions.size(); i++)
+                {
+                    explosions[i].Draw();
+                }
+
+                player.Draw();
+
+                if (player.showAbilityScreen)
+                {
+                    abilityScreen.Draw();
+                }
+            }
+            else
+            {
+                transition.Draw();
+            }
         }
         else
         {
@@ -65,6 +90,23 @@ public:
 
     void GameStarted()
     {
+        if (player.showAbilityScreen)
+        {
+            // TODO
+            // Control all the ability clicks here
+            if (IsKeyPressed(KEY_ONE))
+            {
+                player.canAutoShoot = true;
+                player.showAbilityScreen = false;
+            }
+            else if (IsKeyPressed(KEY_TWO))
+            {
+                player.hasDoubleGun = true;
+                player.showAbilityScreen = false;
+            }
+
+            return;
+        }
         const float dt = GetFrameTime();
         player.Update(dt);
 
@@ -87,6 +129,7 @@ public:
                         enemySpawner.enemies[j].SetQueueFree(true);
                         SpanwExplosion(e.GetPosition());
                         soundManager.PlayExplosionSfx();
+                        player.UpdateExpBarWidth();
                     }
                 }
             }
@@ -172,7 +215,7 @@ int main()
         game.Update();
         game.Draw();
 
-        DrawFPS(10, Settings::WINDOW_HEIGHT - 20);
+        // DrawFPS(10, Settings::WINDOW_HEIGHT - 20);
 
         EndDrawing();
     }

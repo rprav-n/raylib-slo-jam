@@ -27,9 +27,26 @@ public:
     Vector2 centerPoint = {};
     float radius = 12.f;
     bool isDashing = false;
+    bool showAbilityScreen = false;
 
     void PlayLaserSfx();
     void UpdatePlayerHealthProgressWidth();
+    void UpdateExpBarWidth();
+    void ShootLaser();
+
+    // Auto Shoot
+    bool canAutoShoot = false;
+    float shootSpanwnTimer = 0.2f;
+    float shootTimer = 0.0f;
+
+    // Double gun
+    bool hasDoubleGun = false;
+    Vector2 leftGunPosition = {};
+    Vector2 rightGunPosition = {};
+
+    // Player speed variables
+    float acceleration = 10.f;
+    float speed = 5.f;
 
 private:
     Texture2D texture = LoadTexture("./assets/graphics/ships/green_ship.png");
@@ -39,8 +56,7 @@ private:
     Texture2D heartTexture = LoadTexture("./assets/graphics/ui/heart.png");
     Sound laserSfx = LoadSound("./assets/sounds/laser_shoot.wav");
 
-    float acceleration = 10.f;
-    float speed = 5.f;
+    Vector2 direction = {};
     Vector2 velocity = {0.0f, 0.0f};
     float rotation = 0.f;
     float rotationSpeed = 200.0f;
@@ -52,7 +68,7 @@ private:
     float scaledHeight = 0.f;
 
     Rectangle source = Rectangle{texture.width / 3.f, 0.f, texture.width / 3.f, (float)texture.height};
-    Vector2 position = {100.f, 100.f};
+    Vector2 position = {0.f, 0.f};
     Rectangle dest = Rectangle{position.x, position.y, source.width *Settings::SCALE, (float)source.height *Settings::SCALE};
     Vector2 centerOrigin = {};
     Vector2 topLeftOrigin = {};
@@ -70,6 +86,19 @@ private:
 
     //
     int level = 0;
-    int experience = 0;
-    int maxExperience = 20;
+    float expIncreaseBy = 100.f;
+
+    Texture2D expBarTexture = LoadTexture("./assets/graphics/ui/exp_bar_ui.png");
+    Rectangle expBarSource = Rectangle{0.f, 0.f, (float)expBarTexture.width, (float)expBarTexture.height};
+    Rectangle expBarDest = Rectangle{0.f, Settings::WINDOW_HEIGHT - 20.f, expBarTexture.width * 4.f, expBarTexture.height * 4.f};
+    Vector2 expBarDimension = Vector2{Settings::WINDOW_WIDTH, 8.f};
+    Color green = GetColor(0x71e392ff);
+
+    // Laser
+
+    Texture2D laserTexture = LoadTexture("./assets/graphics/bullets/laser_big.png");
+    float laserWidth = laserTexture.width;
+    float laserHeight = laserTexture.height;
+    Rectangle laserSoruce = {0.f, 0.f, laserWidth, laserHeight};
+    Rectangle lasterDest = {100.f, 100.f, 0.f, laserHeight * 4.f};
 };
