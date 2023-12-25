@@ -15,6 +15,7 @@ public:
     void Update(Vector2 playerPosition, float playerRotation);
     void SpawnEnemy();
     void Draw();
+    void DecreaseSpawnTimer();
     vector<Enemy> enemies;
 
 private:

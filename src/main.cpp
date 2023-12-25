@@ -97,11 +97,25 @@ public:
             if (IsKeyPressed(KEY_ONE))
             {
                 player.canAutoShoot = true;
+                enemySpawner.DecreaseSpawnTimer();
                 player.showAbilityScreen = false;
             }
             else if (IsKeyPressed(KEY_TWO))
             {
                 player.hasDoubleGun = true;
+                enemySpawner.DecreaseSpawnTimer();
+                player.showAbilityScreen = false;
+            }
+            else if (IsKeyPressed(KEY_THREE))
+            {
+                player.hasDash = true;
+                enemySpawner.DecreaseSpawnTimer();
+                player.showAbilityScreen = false;
+            }
+            else if (IsKeyPressed(KEY_FOUR))
+            {
+                // TODO reduce by only 10%
+                player.shootSpanwnTimer -= 0.1f;
                 player.showAbilityScreen = false;
             }
 

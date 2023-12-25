@@ -48,6 +48,12 @@ public:
     float acceleration = 10.f;
     float speed = 5.f;
 
+    // Dashing
+    bool hasDash = false;
+
+    // Shoot rockets
+    bool shootRockets = false;
+
 private:
     Texture2D texture = LoadTexture("./assets/graphics/ships/green_ship.png");
     Texture2D red_bullet = LoadTexture("./assets/graphics/bullets/red_bullet.png");

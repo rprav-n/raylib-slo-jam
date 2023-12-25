@@ -53,7 +53,7 @@ void Player::Update(double dt)
         }
     }
 
-    if (IsKeyPressed(KEY_LEFT_SHIFT))
+    if (IsKeyPressed(KEY_LEFT_SHIFT) && hasDash)
     {
         isDashing = true;
     }
@@ -247,7 +247,7 @@ void Player::UpdateExpBarWidth()
     if (expBarDimension.x >= Settings::WINDOW_WIDTH)
     {
         expBarDimension.x = 0;
-        expIncreaseBy -= 10;
+        expIncreaseBy -= 20;
         level++;
         showAbilityScreen = true;
     }

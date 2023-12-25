@@ -76,3 +76,8 @@ void EnemySpawner::Draw()
         enemies[i].Draw();
     }
 }
+
+void EnemySpawner::DecreaseSpawnTimer()
+{
+    spawnTime -= 0.1f;
+}
