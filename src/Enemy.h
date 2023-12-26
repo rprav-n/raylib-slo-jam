@@ -2,6 +2,10 @@
 #include "raylib.h"
 #include "Settings.h"
 #include "Booster.h"
+#include "Bullet.h"
+#include <vector>
+
+using namespace std;
 
 class Enemy
 {
@@ -9,6 +13,7 @@ class Enemy
 private:
     Texture2D texture = LoadTexture("./assets/graphics/enemies/basic_enemy_1.png");
     Texture2D boosterTexture = LoadTexture("./assets/graphics/booster/small.png");
+    Texture2D greenBullet = LoadTexture("./assets/graphics/bullets/green_bullet.png");
     float scaledWidth = texture.width * Settings::SCALE;
     float scaledHeight = texture.height * Settings::SCALE;
     Rectangle source = {0.f, 0.f, (float)texture.width, (float)texture.height};
@@ -36,7 +41,7 @@ public:
     void Update(float dt, Vector2 playerPosition, float rot);
     void Draw();
     void ReduceHealth();
-    void FlickerEnemy();
+    void ShootBullet();
 
     Vector2 GetPosition();
 
@@ -56,4 +61,12 @@ public:
 
     Vector2 centerPoint = {};
     float radius = 10.f;
+
+    vector<Bullet> bullets = {};
+
+    // Bullet
+    int bulletSpeed = 400;
+    bool canAutoShoot = true;
+    float shootSpanwnTimer = 5.f;
+    float shootTimer = 0.0f;
 };

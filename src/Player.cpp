@@ -14,7 +14,7 @@ Player::Player(Vector2 pos)
     origin = {scaledWidth / 2.f,
               scaledHeight / 2.f};
 
-    expBarDimension.x = 0;
+    printf("experienceBarSize============= %f\n", experienceBarSize.x);
 }
 
 Vector2 Player::GetMovementDirection()
@@ -152,9 +152,9 @@ void Player::CheckCollisionBounds()
     {
         position.y = 0 + scaledHeight / 2.f;
     }
-    if (position.y + scaledHeight / 2.f >= Settings::WINDOW_WIDTH)
+    if (position.y + scaledHeight / 2.f >= Settings::WINDOW_HEIGHT)
     {
-        position.y = Settings::WINDOW_WIDTH - scaledHeight / 2.f;
+        position.y = Settings::WINDOW_HEIGHT - scaledHeight / 2.f;
     }
 }
 
@@ -168,14 +168,12 @@ void Player::Draw()
     booster.Draw();
 
     DrawTextureEx(heartTexture, Vector2{5.f, 10.f}, 0.f, Settings::SCALE / 2, WHITE);
-    DrawRectangleV(rectBoxPos, rectBoxSize, pink);
-    DrawTextureEx(healthProgressTexture, healthProgressPos, 0.f, Settings::SCALE, WHITE);
 
-    DrawRectangleV(Vector2{4.f, Settings::WINDOW_HEIGHT - 16.f}, expBarDimension, green);
+    DrawRectangleV(healthBarPos, healthBarSize, pink);
+    DrawRectangleLinesEx(healthBarBorderRect, 4.f, WHITE);
 
-    DrawTexturePro(expBarTexture, expBarSource, expBarDest, Vector2{0, 0}, 0.f, WHITE);
-
-    // ShootLaser();
+    DrawRectangleV(experienceBarPos, experienceBarSize, green);
+    DrawRectangleLinesEx(experienceBarBorderRect, 4.f, WHITE);
 
     Vector2 relativeLeftPosition = Vector2Subtract(leftGunPosition, position);
     Vector2 rotatedRelativeLeftPosition = Vector2Rotate(relativeLeftPosition, rotation * DEG2RAD);
@@ -196,12 +194,10 @@ void Player::ShootBullet()
     {
 
         Vector2 leftBulletDirection = Vector2Rotate({0, -1}, DEG2RAD * rotation);
-        Vector2 leftBulletOrigin = {centerOrigin.x - 15.f, centerOrigin.y};
-        Bullet leftBullet = Bullet(red_bullet, leftGunPosition, leftBulletDirection, rotation);
+        Bullet leftBullet = Bullet(red_bullet, leftGunPosition, leftBulletDirection, rotation, bulletSpeed);
 
         Vector2 rightBulletDirection = Vector2Rotate({0, -1}, DEG2RAD * rotation);
-        Vector2 rightBulletOrigin = {centerOrigin.x + 15.f, centerOrigin.y};
-        Bullet rightBullet = Bullet(red_bullet, rightGunPosition, rightBulletDirection, rotation);
+        Bullet rightBullet = Bullet(red_bullet, rightGunPosition, rightBulletDirection, rotation, bulletSpeed);
 
         bullets.push_back(leftBullet);
         bullets.push_back(rightBullet);
@@ -209,7 +205,7 @@ void Player::ShootBullet()
     else
     {
         Vector2 bulletDirection = Vector2Rotate({0, -1}, DEG2RAD * rotation);
-        Bullet bullet = Bullet(red_bullet, centerOrigin, bulletDirection, rotation);
+        Bullet bullet = Bullet(red_bullet, centerOrigin, bulletDirection, rotation, bulletSpeed);
         bullets.push_back(bullet);
     }
 }
@@ -235,34 +231,39 @@ void Player::PlayLaserSfx()
     PlaySound(laserSfx);
 };
 
-void Player::UpdatePlayerHealthProgressWidth()
+void Player::ReduceHealth()
 {
-    rectBoxSize.x -= 10;
+
+    healthBarSize.x -= 10.f;
+    if (healthBarSize.x <= 0.f)
+    {
+        // TODO destroy player, game over
+    }
+    else
+    {
+    }
 }
 
 void Player::UpdateExpBarWidth()
 {
-    expBarDimension.x += expIncreaseBy;
+    experienceBarSize.x += expIncreaseBy;
 
-    if (expBarDimension.x >= Settings::WINDOW_WIDTH)
+    if (experienceBarSize.x >= Settings::WINDOW_WIDTH)
     {
-        expBarDimension.x = 0;
-        expIncreaseBy -= 20;
+        experienceBarSize.x = 0;
+        // TODO reduce expirence by 10% of previous
+        expIncreaseBy -= expIncreaseBy * 10 / 100.f;
+        printf("expIncreaseBy %f\n", expIncreaseBy);
+        if (expIncreaseBy < 0.f)
+        {
+            expIncreaseBy = 10.f;
+        }
         level++;
         showAbilityScreen = true;
     }
 }
 
-void Player::ShootLaser()
+void Player::GetFullHealth()
 {
-    lasterDest.width += 20.f;
-    if (lasterDest.width >= Settings::WINDOW_WIDTH / 2.f)
-    {
-        lasterDest.width = 256.f;
-        // lasterDest.width = 0.f;
-    }
-    lasterDest.x = position.x;
-    lasterDest.y = position.y;
-    // DrawTextureEx(laserTexture, Vector2{position.x, position.y}, 0.f, 4.f, WHITE);
-    DrawTexturePro(laserTexture, laserSoruce, lasterDest, Vector2{-10.f, 16.f}, rotation - 90, WHITE);
+    healthBarSize.x = MAX_HEALTH;
 }

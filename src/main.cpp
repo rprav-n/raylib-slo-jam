@@ -116,7 +116,15 @@ public:
             {
                 // TODO reduce by only 10%
                 player.shootSpanwnTimer -= 0.1f;
+                enemySpawner.DecreaseSpawnTimer();
                 player.showAbilityScreen = false;
+            }
+            else if (IsKeyPressed(KEY_FIVE))
+            {
+                // Get full health
+                player.GetFullHealth();
+                player.showAbilityScreen = false;
+                enemySpawner.DecreaseSpawnTimer();
             }
 
             return;
@@ -155,7 +163,7 @@ public:
             Enemy e = enemySpawner.enemies[i];
             if (CheckCollisionCircles(player.centerPoint, player.radius, e.centerPoint, e.radius))
             {
-                player.UpdatePlayerHealthProgressWidth();
+                player.ReduceHealth();
                 // TODO
                 // Reduce player health
                 // Reduce enemy health
@@ -201,40 +209,22 @@ int main()
     InitWindow(Settings::WINDOW_WIDTH, Settings::WINDOW_HEIGHT, "Edge Of Void");
     InitAudioDevice();
 
-    Texture2D bg = LoadTexture("./assets/graphics/environment/bg.png");
-    const int bgMoveSpeed = 200;
-    float bgY = 0.f;
-
     Game game = Game();
 
     SetTargetFPS(60);
     while (!WindowShouldClose())
     {
-        const float dt = GetFrameTime();
         BeginDrawing();
-        ClearBackground(WHITE);
-
-        bgY += bgMoveSpeed * dt;
-        if (bgY >= bg.height * Settings::SCALE)
-        {
-            bgY = 0.f;
-        }
-
-        Vector2 bgOnePos = {0.f, bgY};
-        DrawTextureEx(bg, bgOnePos, 0.f, Settings::SCALE, WHITE);
-
-        Vector2 bgTwoPos = {0.f, bgY - bg.height * Settings::SCALE};
-        DrawTextureEx(bg, bgTwoPos, 0.f, Settings::SCALE, WHITE);
+        ClearBackground(BLACK);
 
         game.Update();
         game.Draw();
 
-        // DrawFPS(10, Settings::WINDOW_HEIGHT - 20);
+        DrawFPS(10, Settings::WINDOW_HEIGHT - 20);
 
         EndDrawing();
     }
 
-    UnloadTexture(bg);
     CloseAudioDevice();
     CloseWindow();
 

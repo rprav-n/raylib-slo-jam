@@ -4,6 +4,7 @@
 #include "Booster.h"
 #include "Settings.h"
 #include <vector>
+#include <cstdio>
 
 using namespace std;
 
@@ -30,9 +31,12 @@ public:
     bool showAbilityScreen = false;
 
     void PlayLaserSfx();
-    void UpdatePlayerHealthProgressWidth();
+    void ReduceHealth();
     void UpdateExpBarWidth();
-    void ShootLaser();
+    void GetFullHealth();
+
+    // bullet speed
+    int bulletSpeed = 800;
 
     // Auto Shoot
     bool canAutoShoot = false;
@@ -82,29 +86,22 @@ private:
     Vector2 origin = {};
     Booster booster = Booster(boosterTexture, Vector2{0.f, 0.f});
 
-    // Health progress
-    Vector2 healthProgressPos = Vector2{heartTexture.width * 2.f + 10.f, 10.f};
-    Vector2 rectBoxPos = Vector2{healthProgressPos.x + 4.f, healthProgressPos.y};
-    Vector2 rectBoxSize = Vector2{healthProgressTexture.width * Settings::SCALE - 8.f, healthProgressTexture.height *Settings::SCALE};
+    // Health
+    float MAX_HEALTH = 150.f;
+    Vector2 healthBarPos = {30.f, 10.f};
+    Vector2 healthBarSize = {MAX_HEALTH, 16.f};
+    Rectangle healthBarBorderRect = {healthBarPos.x, healthBarPos.y, healthBarSize.x, 16.f};
 
-    // Colors
-    Color pink = GetColor(0xdb41c3ff);
-
-    //
+    // Expirence
     int level = 0;
     float expIncreaseBy = 100.f;
 
-    Texture2D expBarTexture = LoadTexture("./assets/graphics/ui/exp_bar_ui.png");
-    Rectangle expBarSource = Rectangle{0.f, 0.f, (float)expBarTexture.width, (float)expBarTexture.height};
-    Rectangle expBarDest = Rectangle{0.f, Settings::WINDOW_HEIGHT - 20.f, expBarTexture.width * 4.f, expBarTexture.height * 4.f};
-    Vector2 expBarDimension = Vector2{Settings::WINDOW_WIDTH, 8.f};
+    float MAX_EXP_BAR = Settings::WINDOW_WIDTH - 100.f;
+    Vector2 experienceBarPos = {50.f, Settings::WINDOW_HEIGHT - 30.f};
+    Vector2 experienceBarSize = {0.f, 16.f};
+    Rectangle experienceBarBorderRect = {experienceBarPos.x, experienceBarPos.y, MAX_EXP_BAR, 16.f};
+
+    // Colors
+    Color pink = GetColor(0xdb41c3ff);
     Color green = GetColor(0x71e392ff);
-
-    // Laser
-
-    Texture2D laserTexture = LoadTexture("./assets/graphics/bullets/laser_big.png");
-    float laserWidth = laserTexture.width;
-    float laserHeight = laserTexture.height;
-    Rectangle laserSoruce = {0.f, 0.f, laserWidth, laserHeight};
-    Rectangle lasterDest = {100.f, 100.f, 0.f, laserHeight * 4.f};
 };

@@ -1,7 +1,7 @@
 #include "Bullet.h"
 #include "raylib.h"
 
-Bullet::Bullet(Texture txt, Vector2 pos, Vector2 dir, float rot)
+Bullet::Bullet(Texture txt, Vector2 pos, Vector2 dir, float rot, int spd)
 {
     texture = txt;
     scaledWidth = txt.width * Settings::SCALE;
@@ -13,6 +13,7 @@ Bullet::Bullet(Texture txt, Vector2 pos, Vector2 dir, float rot)
     position = pos;
     direction = dir;
     rotation = rot;
+    speed = spd;
 }
 
 bool Bullet::IsOutOfBounds()

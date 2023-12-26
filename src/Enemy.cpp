@@ -58,6 +58,35 @@ void Enemy::Update(float dt, Vector2 playerPosition, float rot)
         isFlickering = false;
         flickerTimer = 0.0f;
     }
+
+    if (canAutoShoot)
+    {
+        shootTimer += dt;
+        if (shootTimer >= shootSpanwnTimer)
+        {
+            shootTimer = 0.f;
+            ShootBullet();
+        }
+    }
+
+    for (int i = 0; i < bullets.size(); i++)
+    {
+        bullets[i].Update(dt);
+    }
+
+    // Remove bullet if it goes beyound the screen
+    for (int i = 0; i < bullets.size();)
+    {
+        Bullet b = bullets[i];
+        if (b.IsOutOfBounds() || b.IsQueueFree())
+        {
+            bullets.erase(bullets.begin() + i);
+        }
+        else
+        {
+            ++i;
+        }
+    }
 }
 
 void Enemy::Draw()
@@ -78,6 +107,11 @@ void Enemy::Draw()
             DrawTexturePro(texture, source, dest, origin, rotation, WHITE);
         }
     }
+
+    for (int i = 0; i < bullets.size(); i++)
+    {
+        bullets[i].Draw();
+    }
 }
 
 Vector2 Enemy::GetPosition()
@@ -93,6 +127,9 @@ void Enemy::ReduceHealth()
     isFlickering = true;
 }
 
-void Enemy::FlickerEnemy()
+void Enemy::ShootBullet()
 {
+    Vector2 bulletDirection = Vector2Rotate({0, 1}, DEG2RAD * rotation);
+    Bullet bullet = Bullet(greenBullet, position, bulletDirection, rotation, bulletSpeed);
+    bullets.push_back(bullet);
 }

@@ -1,10 +1,11 @@
+#pragma once
 #include "raylib.h"
 #include "Settings.h"
 
 class Bullet
 {
 public:
-    Bullet(Texture txt, Vector2 pos, Vector2 dir, float rot);
+    Bullet(Texture txt, Vector2 pos, Vector2 dir, float rot, int spd);
     bool IsOutOfBounds();
     void Update(float dt);
     void Draw();
