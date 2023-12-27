@@ -3,7 +3,10 @@
 void EnemySpawner::Update(Vector2 playerPosition, float playerRotation)
 {
     const float dt = GetFrameTime();
-    currentTimer += dt;
+    if (shouldSpawn)
+    {
+        currentTimer += dt;
+    }
 
     if (currentTimer >= spawnTime)
     {

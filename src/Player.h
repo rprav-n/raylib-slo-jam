@@ -26,6 +26,8 @@ public:
     vector<Bullet> bullets;
 
     Vector2 centerPoint = {};
+    float SHIP_RADIUS = 12.f;
+    float SHIELD_RADIUS = 28.f;
     float radius = 12.f;
     bool isDashing = false;
     bool showAbilityScreen = false;
@@ -55,15 +57,24 @@ public:
     // Dashing
     bool hasDash = false;
 
+    // Shield
+    bool hasShied = false;
+
     // Shoot rockets
     bool shootRockets = false;
+
+    // Burst bullets
+    bool hasBurstBullet = false;
+    int burstCount = 1;
 
 private:
     Texture2D texture = LoadTexture("./assets/graphics/ships/green_ship.png");
     Texture2D red_bullet = LoadTexture("./assets/graphics/bullets/red_bullet.png");
     Texture2D boosterTexture = LoadTexture("./assets/graphics/booster/medium.png");
     Texture2D healthProgressTexture = LoadTexture("./assets/graphics/ui/health_ui.png");
-    Texture2D heartTexture = LoadTexture("./assets/graphics/ui/heart.png");
+    Texture2D heartIconTexture = LoadTexture("./assets/graphics/ui/heart_icon.png");
+    Texture2D shieldIconTexture = LoadTexture("./assets/graphics/ui/shield_icon.png");
+    Texture2D shieldTexture = LoadTexture("./assets/graphics/shield/shield_sheet.png");
     Sound laserSfx = LoadSound("./assets/sounds/laser_shoot.wav");
 
     Vector2 direction = {};
@@ -92,6 +103,25 @@ private:
     Vector2 healthBarSize = {MAX_HEALTH, 16.f};
     Rectangle healthBarBorderRect = {healthBarPos.x, healthBarPos.y, healthBarSize.x, 16.f};
 
+    // Shield bar
+    float MAX_SHIELD = 150.f;
+    Vector2 shieldBarPos = {30.f, 30.f};
+    Vector2 shieldBarSize = {MAX_SHIELD, 16.f};
+    Rectangle shieldBarBorderRect = {shieldBarPos.x, shieldBarPos.y, shieldBarSize.x, 16.f};
+
+    // Shield
+    int MAX_FRAME = 4;
+    int frame = 3;
+    float shieldWidth = shieldTexture.width / 4.f;
+    float shieldHeight = (float)shieldTexture.height;
+
+    float scaledShieldWidth = shieldWidth * Settings::SCALE;
+    float scaledShieldHeight = shieldHeight * Settings::SCALE;
+
+    Rectangle shieldSource = Rectangle{frame * shieldWidth, 0.f, shieldWidth, shieldHeight};
+    Rectangle shieldDest = Rectangle{0.f, 0.f, scaledShieldWidth, scaledShieldHeight};
+    Vector2 shieldCenterOrigin = {scaledShieldWidth / 2.f, scaledShieldHeight / 2.f};
+
     // Expirence
     int level = 0;
     float expIncreaseBy = 100.f;
@@ -104,4 +134,5 @@ private:
     // Colors
     Color pink = GetColor(0xdb41c3ff);
     Color green = GetColor(0x71e392ff);
+    Color lightBlue = GetColor(0x61d3e3ff);
 };

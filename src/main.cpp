@@ -19,6 +19,7 @@ using namespace std;
 class Game
 {
 private:
+    Texture2D crossHairTexture = LoadTexture("./assets/graphics/ui/cross_hair.png");
     Texture2D explosionTexture = LoadTexture("./assets/graphics/explosion/red.png");
     vector<Explosion> explosions;
 
@@ -34,6 +35,10 @@ private:
     AbilityScreen abilityScreen = AbilityScreen();
 
 public:
+    Game()
+    {
+        HideCursor();
+    };
     void Update()
     {
         soundManager.UpdateMusic();
@@ -86,6 +91,9 @@ public:
         {
             mainScreen.Draw();
         }
+
+        // Draw mouse cursor - cross hair
+        DrawTextureEx(crossHairTexture, GetMousePosition(), 0.f, Settings::SCALE, WHITE);
     }
 
     void GameStarted()
@@ -126,6 +134,20 @@ public:
                 player.showAbilityScreen = false;
                 enemySpawner.DecreaseSpawnTimer();
             }
+            else if (IsKeyPressed(KEY_SIX))
+            {
+                // Get Shield or Full Sheild
+                player.hasShied = true;
+                player.showAbilityScreen = false;
+                enemySpawner.DecreaseSpawnTimer();
+            }
+            else if (IsKeyPressed(KEY_SEVEN))
+            {
+                // Shoot 3 Burst Bullets
+                player.hasBurstBullet = true;
+                player.showAbilityScreen = false;
+                enemySpawner.DecreaseSpawnTimer();
+            }
 
             return;
         }
@@ -135,6 +157,7 @@ public:
         enemySpawner.Update(player.GetPosition(), player.GetRotation());
         asteroidSpawner.Update();
 
+        // collision b/w player bullet and enemy
         for (int i = 0; i < player.bullets.size(); i++)
         {
             Bullet b = player.bullets[i];
@@ -157,7 +180,7 @@ public:
             }
         }
 
-        // when player and enemy ship collides
+        // collision b/w player ship and enemy ship
         for (int i = 0; i < enemySpawner.enemies.size(); i++)
         {
             Enemy e = enemySpawner.enemies[i];

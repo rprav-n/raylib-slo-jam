@@ -34,7 +34,14 @@ Vector2 Player::GetMovementDirection()
 
 void Player::Update(double dt)
 {
-
+    if (hasShied)
+    {
+        radius = SHIELD_RADIUS;
+    }
+    else
+    {
+        radius = SHIP_RADIUS;
+    }
     direction = GetMovementDirection(); // normalized direction vector
     if (IsKeyPressed(KEY_SPACE) && !canAutoShoot)
     {
@@ -130,6 +137,9 @@ void Player::Update(double dt)
     dest.x = position.x;
     dest.y = position.y;
 
+    shieldDest.x = centerOrigin.x;
+    shieldDest.y = centerOrigin.y;
+
     boosterPos = {position.x, position.y + scaledHeight / 2.f};
 
     booster.Update(dt, position, rotation);
@@ -167,13 +177,33 @@ void Player::Draw()
     DrawTexturePro(texture, source, dest, origin, rotation, WHITE);
     booster.Draw();
 
-    DrawTextureEx(heartTexture, Vector2{5.f, 10.f}, 0.f, Settings::SCALE / 2, WHITE);
+    // heart and shield icons
+    DrawTextureEx(heartIconTexture, Vector2{5, 10}, 0.f, 0.8, WHITE);
+    if (hasShied)
+    {
+        DrawTextureEx(shieldIconTexture, Vector2{5, 30}, 0.f, 0.8, WHITE);
+    }
 
+    // health bar
     DrawRectangleV(healthBarPos, healthBarSize, pink);
     DrawRectangleLinesEx(healthBarBorderRect, 4.f, WHITE);
 
+    // shield bar
+    if (hasShied)
+    {
+        DrawRectangleV(shieldBarPos, shieldBarSize, lightBlue);
+        DrawRectangleLinesEx(shieldBarBorderRect, 4.f, WHITE);
+    }
+
+    // expirence bar
     DrawRectangleV(experienceBarPos, experienceBarSize, green);
     DrawRectangleLinesEx(experienceBarBorderRect, 4.f, WHITE);
+
+    // player shield
+    if (hasShied)
+    {
+        DrawTexturePro(shieldTexture, shieldSource, shieldDest, shieldCenterOrigin, 0.f, WHITE);
+    }
 
     Vector2 relativeLeftPosition = Vector2Subtract(leftGunPosition, position);
     Vector2 rotatedRelativeLeftPosition = Vector2Rotate(relativeLeftPosition, rotation * DEG2RAD);
@@ -186,6 +216,12 @@ void Player::Draw()
     // debug: drawing left, right gun position
     // DrawCircleV(leftGunPosition, 5.f, RED);
     // DrawCircleV(rightGunPosition, 5.f, BLUE);
+    // DrawCircleV(centerPoint, radius, RED);
+
+    // TODO Flicker Shield with WHITE Color when get hit
+    if (hasShied)
+    {
+    }
 }
 
 void Player::ShootBullet()
@@ -201,6 +237,16 @@ void Player::ShootBullet()
 
         bullets.push_back(leftBullet);
         bullets.push_back(rightBullet);
+    }
+    else if (hasBurstBullet)
+    {
+
+        for (int i = -burstCount; i <= burstCount; i++)
+        {
+            Vector2 bulletDirection = Vector2Rotate({i * 0.1f, -1}, DEG2RAD * rotation);
+            Bullet bullet = Bullet(red_bullet, centerOrigin, bulletDirection, rotation, bulletSpeed);
+            bullets.push_back(bullet);
+        }
     }
     else
     {
@@ -234,13 +280,25 @@ void Player::PlayLaserSfx()
 void Player::ReduceHealth()
 {
 
-    healthBarSize.x -= 10.f;
-    if (healthBarSize.x <= 0.f)
+    if (hasShied)
     {
-        // TODO destroy player, game over
+        shieldBarSize.x -= 10.f;
+        if (shieldBarSize.x <= 0.f)
+        {
+            hasShied = false;
+            // TODO play shield loss sound
+        }
     }
     else
     {
+        healthBarSize.x -= 10.f;
+        if (healthBarSize.x <= 0.f)
+        {
+            // TODO destroy player, game over
+        }
+        else
+        {
+        }
     }
 }
 
@@ -248,7 +306,7 @@ void Player::UpdateExpBarWidth()
 {
     experienceBarSize.x += expIncreaseBy;
 
-    if (experienceBarSize.x >= Settings::WINDOW_WIDTH)
+    if (experienceBarSize.x >= MAX_EXP_BAR)
     {
         experienceBarSize.x = 0;
         // TODO reduce expirence by 10% of previous

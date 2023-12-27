@@ -19,6 +19,7 @@ public:
     vector<Enemy> enemies;
 
 private:
+    bool shouldSpawn = true;
     float spawnTime = 4.f;
     float currentTimer = 0.f;
     Texture2D basicEnemy1 = LoadTexture("./assets/graphics/enemies/basic_enemy_1.png");
