@@ -82,5 +82,9 @@ void EnemySpawner::Draw()
 
 void EnemySpawner::DecreaseSpawnTimer()
 {
-    spawnTime -= 0.1f;
+    spawnTime -= spawnTime * 0.95f;
+    if (spawnTime <= 0.5f)
+    {
+        spawnTime = 0.5f;
+    }
 }

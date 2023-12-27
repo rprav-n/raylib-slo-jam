@@ -28,7 +28,10 @@ void AsteroidSpawner::SpawnAsteroid()
 void AsteroidSpawner::Update()
 {
     double dt = GetFrameTime();
-    currentTimer += dt;
+    if (shoudlSpawn)
+    {
+        currentTimer += dt;
+    }
 
     if (currentTimer >= spawnTime)
     {

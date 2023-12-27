@@ -21,4 +21,5 @@ private:
     Texture2D smallAsteroidTexture = LoadTexture("./assets/graphics/environment/asteroid_small.png");
     float spawnTime = 3.f;
     float currentTimer = 0.f;
+    bool shoudlSpawn = false;
 };

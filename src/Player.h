@@ -110,7 +110,6 @@ private:
     Rectangle shieldBarBorderRect = {shieldBarPos.x, shieldBarPos.y, shieldBarSize.x, 16.f};
 
     // Shield
-    int MAX_FRAME = 4;
     int frame = 3;
     float shieldWidth = shieldTexture.width / 4.f;
     float shieldHeight = (float)shieldTexture.height;

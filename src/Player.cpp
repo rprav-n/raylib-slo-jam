@@ -310,11 +310,12 @@ void Player::UpdateExpBarWidth()
     {
         experienceBarSize.x = 0;
         // TODO reduce expirence by 10% of previous
-        expIncreaseBy -= expIncreaseBy * 10 / 100.f;
+        float reducedValue = expIncreaseBy * 0.1;
+        expIncreaseBy -= reducedValue;
         printf("expIncreaseBy %f\n", expIncreaseBy);
-        if (expIncreaseBy < 0.f)
+        if (expIncreaseBy < 30.f)
         {
-            expIncreaseBy = 10.f;
+            expIncreaseBy = 30.f;
         }
         level++;
         showAbilityScreen = true;

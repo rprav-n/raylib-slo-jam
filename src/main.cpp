@@ -39,6 +39,10 @@ public:
     {
         HideCursor();
     };
+    Vector2 GetPlayerPositon()
+    {
+        return player.GetPosition();
+    };
     void Update()
     {
         soundManager.UpdateMusic();
@@ -58,7 +62,7 @@ public:
         {
             mainScreen.Update();
         }
-    }
+    };
 
     void Draw()
     {
@@ -232,18 +236,31 @@ int main()
     InitWindow(Settings::WINDOW_WIDTH, Settings::WINDOW_HEIGHT, "Edge Of Void");
     InitAudioDevice();
 
+    Camera2D camera = {};
+    camera.target = Vector2{Settings::WINDOW_WIDTH / 2.0f, Settings::WINDOW_HEIGHT / 2.0f};
+    camera.offset = Vector2{Settings::WINDOW_WIDTH / 2.0f, Settings::WINDOW_HEIGHT / 2.0f};
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
+
     Game game = Game();
 
     SetTargetFPS(60);
     while (!WindowShouldClose())
     {
-        BeginDrawing();
-        ClearBackground(BLACK);
 
         game.Update();
-        game.Draw();
+        // camera.target = game.GetPlayerPositon();
 
-        DrawFPS(10, Settings::WINDOW_HEIGHT - 20);
+        BeginDrawing();
+        ClearBackground(BLACK);
+        {
+            BeginMode2D(camera);
+            {
+                game.Draw();
+                DrawFPS(10, Settings::WINDOW_HEIGHT - 20);
+            }
+            EndMode2D();
+        }
 
         EndDrawing();
     }
