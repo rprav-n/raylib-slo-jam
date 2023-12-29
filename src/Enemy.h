@@ -60,7 +60,7 @@ public:
     };
 
     Vector2 centerPoint = {};
-    float radius = 10.f;
+    float radius = 14.f;
 
     vector<Bullet> bullets = {};
 

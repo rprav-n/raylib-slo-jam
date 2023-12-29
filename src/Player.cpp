@@ -101,6 +101,14 @@ void Player::Update(double dt)
 
     position = Vector2Add(position, velocity);
 
+    // Rotate the player based on Mouse Position
+    // Vector2 direction = Vector2Subtract(GetMousePosition(), position);
+    // rotation = atan2f(direction.y, direction.x) * RAD2DEG + 90.f;
+    // if (rotation < -360.f || rotation > 360.f)
+    // {
+    //     rotation = 0.f;
+    // }
+
     for (int i = 0; i < bullets.size(); i++)
     {
         bullets[i].Update(dt);
@@ -216,7 +224,7 @@ void Player::Draw()
     // debug: drawing left, right gun position
     // DrawCircleV(leftGunPosition, 5.f, RED);
     // DrawCircleV(rightGunPosition, 5.f, BLUE);
-    // DrawCircleV(centerPoint, radius, RED);
+    // DrawCircleV(centerPoint, SHIELD_RADIUS, RED);
 
     // TODO Flicker Shield with WHITE Color when get hit
     if (hasShied)
@@ -325,4 +333,8 @@ void Player::UpdateExpBarWidth()
 void Player::GetFullHealth()
 {
     healthBarSize.x = MAX_HEALTH;
+}
+void Player::GetFullShield()
+{
+    shieldBarSize.x = MAX_SHIELD;
 }

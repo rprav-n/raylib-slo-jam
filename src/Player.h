@@ -27,7 +27,7 @@ public:
 
     Vector2 centerPoint = {};
     float SHIP_RADIUS = 12.f;
-    float SHIELD_RADIUS = 28.f;
+    float SHIELD_RADIUS = 32.f;
     float radius = 12.f;
     bool isDashing = false;
     bool showAbilityScreen = false;
@@ -36,13 +36,14 @@ public:
     void ReduceHealth();
     void UpdateExpBarWidth();
     void GetFullHealth();
+    void GetFullShield();
 
     // bullet speed
     int bulletSpeed = 800;
 
     // Auto Shoot
     bool canAutoShoot = false;
-    float shootSpanwnTimer = 0.2f;
+    float shootSpanwnTimer = 0.3f;
     float shootTimer = 0.0f;
 
     // Double gun
@@ -66,6 +67,11 @@ public:
     // Burst bullets
     bool hasBurstBullet = false;
     int burstCount = 1;
+
+    float GetRadius()
+    {
+        return radius;
+    };
 
 private:
     Texture2D texture = LoadTexture("./assets/graphics/ships/green_ship.png");

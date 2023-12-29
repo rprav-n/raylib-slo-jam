@@ -19,7 +19,7 @@ public:
 private:
     Texture2D bigAsteroidTexture = LoadTexture("./assets/graphics/environment/asteroid_big.png");
     Texture2D smallAsteroidTexture = LoadTexture("./assets/graphics/environment/asteroid_small.png");
-    float spawnTime = 3.f;
+    float spawnTime = 2.f;
     float currentTimer = 0.f;
-    bool shoudlSpawn = false;
+    bool shoudlSpawn = true;
 };

@@ -55,13 +55,13 @@ void EnemySpawner::SpawnEnemy()
     switch (randomEnemyIndex)
     {
     case 0: // basic_enemy_1
-        speed = 100.f;
+        speed = basicEnemyOneSpeed;
         break;
     case 1: // basic_enemy_2
-        speed = 125.f;
+        speed = basicEnemyTwoSpeed;
         break;
     case 2: // basic_enemy_3
-        speed = 100.f;
+        speed = basicEnemyThreeSpeed;
         break;
 
     default:
@@ -82,9 +82,12 @@ void EnemySpawner::Draw()
 
 void EnemySpawner::DecreaseSpawnTimer()
 {
-    spawnTime -= spawnTime * 0.95f;
+    spawnTime -= 0.2f;
     if (spawnTime <= 0.5f)
     {
         spawnTime = 0.5f;
     }
+    basicEnemyOneSpeed += 100 * 0.25f;
+    basicEnemyTwoSpeed += 100 * 0.25f;
+    basicEnemyThreeSpeed += 100 * 0.25f;
 }

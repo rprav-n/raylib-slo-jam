@@ -110,7 +110,15 @@ void Enemy::Draw()
 
     for (int i = 0; i < bullets.size(); i++)
     {
-        bullets[i].Draw();
+        if (!bullets[i].IsQueueFree())
+        {
+            bullets[i].Draw();
+        }
+    }
+
+    if (Settings::DEBUG)
+    {
+        DrawCircleV(centerPoint, radius, RED);
     }
 }
 
@@ -122,8 +130,6 @@ Vector2 Enemy::GetPosition()
 void Enemy::ReduceHealth()
 {
     health -= 1;
-    printf("health %d\n", health);
-    // Flicker enemy with white for 0.2s
     isFlickering = true;
 }
 

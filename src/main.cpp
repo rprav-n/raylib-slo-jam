@@ -74,12 +74,11 @@ public:
                 asteroidSpawner.Draw();
                 enemySpawner.Draw();
 
+                player.Draw();
                 for (int i = 0; i < explosions.size(); i++)
                 {
                     explosions[i].Draw();
                 }
-
-                player.Draw();
 
                 if (player.showAbilityScreen)
                 {
@@ -97,7 +96,10 @@ public:
         }
 
         // Draw mouse cursor - cross hair
-        DrawTextureEx(crossHairTexture, GetMousePosition(), 0.f, Settings::SCALE, WHITE);
+        Vector2 mousePos = GetMousePosition();
+        mousePos.x -= crossHairTexture.width / 2.f;
+        mousePos.y -= crossHairTexture.height / 2.f;
+        DrawTextureEx(crossHairTexture, mousePos, 0.f, Settings::SCALE, WHITE);
     }
 
     void GameStarted()
@@ -115,6 +117,7 @@ public:
             else if (IsKeyPressed(KEY_TWO))
             {
                 player.hasDoubleGun = true;
+                player.hasBurstBullet = false;
                 enemySpawner.DecreaseSpawnTimer();
                 player.showAbilityScreen = false;
             }
@@ -127,7 +130,11 @@ public:
             else if (IsKeyPressed(KEY_FOUR))
             {
                 // TODO reduce by only 10%
-                player.shootSpanwnTimer -= 0.1f;
+                player.shootSpanwnTimer -= 0.05f;
+                if (player.shootSpanwnTimer < 0.1f)
+                {
+                    player.shootSpanwnTimer = 0.1f;
+                }
                 enemySpawner.DecreaseSpawnTimer();
                 player.showAbilityScreen = false;
             }
@@ -142,12 +149,14 @@ public:
             {
                 // Get Shield or Full Sheild
                 player.hasShied = true;
+                player.GetFullShield();
                 player.showAbilityScreen = false;
                 enemySpawner.DecreaseSpawnTimer();
             }
             else if (IsKeyPressed(KEY_SEVEN))
             {
                 // Shoot 3 Burst Bullets
+                player.hasDoubleGun = false;
                 player.hasBurstBullet = true;
                 player.showAbilityScreen = false;
                 enemySpawner.DecreaseSpawnTimer();
@@ -184,6 +193,23 @@ public:
             }
         }
 
+        // collision b/w enemies bullet and player
+        for (int i = 0; i < enemySpawner.enemies.size(); i++)
+        {
+            for (int j = 0; j < enemySpawner.enemies[i].bullets.size(); j++)
+            {
+                Bullet b = enemySpawner.enemies[i].bullets[j];
+                if (CheckCollisionCircles(b.centerPoint, b.radius, player.centerPoint, player.GetRadius()))
+                {
+                    enemySpawner.enemies[i].bullets[j].SetQueueFree(true);
+                    player.ReduceHealth();
+
+                    SpanwExplosion(b.GetPosition());
+                    soundManager.PlayExplosionSfx();
+                }
+            }
+        }
+
         // collision b/w player ship and enemy ship
         for (int i = 0; i < enemySpawner.enemies.size(); i++)
         {
@@ -191,9 +217,6 @@ public:
             if (CheckCollisionCircles(player.centerPoint, player.radius, e.centerPoint, e.radius))
             {
                 player.ReduceHealth();
-                // TODO
-                // Reduce player health
-                // Reduce enemy health
                 SpanwExplosion(e.GetPosition());
                 enemySpawner.enemies[i].SetQueueFree(true);
                 soundManager.PlayExplosionSfx();
@@ -244,16 +267,41 @@ int main()
 
     Game game = Game();
 
+    // Background
+    Texture2D bgTexture = LoadTexture("./assets/graphics/environment/bg.png");
+    float width = bgTexture.width;
+    float height = bgTexture.height;
+
+    float scaledWidth = width * 6;
+    float scaledHeight = height * 6;
+
+    Rectangle source = Rectangle{0, 0, width, height};
+    Rectangle destOne = Rectangle{0, -Settings::WINDOW_HEIGHT, scaledWidth, scaledHeight};
+    Rectangle destTwo = Rectangle{0, 0, scaledWidth, scaledHeight};
+
+    float bgY = 0.f;
+
     SetTargetFPS(60);
     while (!WindowShouldClose())
     {
+        float dt = GetFrameTime();
+        bgY += dt * 400.f;
+
+        if (bgY >= scaledHeight)
+        {
+            bgY = 0.f;
+        }
 
         game.Update();
-        // camera.target = game.GetPlayerPositon();
 
         BeginDrawing();
         ClearBackground(BLACK);
         {
+            destTwo.y = bgY;
+            destOne.y = -scaledHeight + bgY;
+            DrawTexturePro(bgTexture, source, destTwo, Vector2{0, 0}, 0.f, WHITE);
+            DrawTexturePro(bgTexture, source, destOne, Vector2{0, 0}, 0.f, WHITE);
+
             BeginMode2D(camera);
             {
                 game.Draw();

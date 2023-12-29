@@ -22,6 +22,11 @@ public:
     Vector2 centerPoint = {};
     float radius = 5.f;
 
+    Vector2 GetPosition()
+    {
+        return position;
+    };
+
 private:
     Texture2D texture;
     Rectangle rect = {};

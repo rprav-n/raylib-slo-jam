@@ -17,10 +17,13 @@ public:
     void Draw();
     void DecreaseSpawnTimer();
     vector<Enemy> enemies;
+    float basicEnemyOneSpeed = 50.f;
+    float basicEnemyTwoSpeed = 75.f;
+    float basicEnemyThreeSpeed = 50.f;
 
 private:
     bool shouldSpawn = true;
-    float spawnTime = 1.5f;
+    float spawnTime = 2.f;
     float currentTimer = 0.f;
     Texture2D basicEnemy1 = LoadTexture("./assets/graphics/enemies/basic_enemy_1.png");
     Texture2D basicEnemy2 = LoadTexture("./assets/graphics/enemies/basic_enemy_2.png");
