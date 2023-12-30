@@ -3,6 +3,7 @@
 #include "Bullet.h"
 #include "Booster.h"
 #include "Settings.h"
+#include "Helper.h"
 #include <vector>
 #include <cstdio>
 
@@ -13,6 +14,7 @@ class Player
 
 public:
     Player(Vector2 pos);
+    Helper helper = Helper();
     Vector2 GetMovementDirection();
 
     void Update(double dt);
@@ -46,6 +48,7 @@ public:
     void UpdateExpBarWidth();
     void GetFullHealth();
     void GetFullShield();
+    void KnockBack();
 
     // bullet speed
     int bulletSpeed = 800;

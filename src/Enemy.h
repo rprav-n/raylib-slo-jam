@@ -3,6 +3,7 @@
 #include "Settings.h"
 #include "Booster.h"
 #include "Bullet.h"
+#include "Helper.h"
 #include <vector>
 
 using namespace std;
@@ -38,6 +39,7 @@ private:
 
 public:
     Enemy(Texture2D txtr, Vector2 spawnPosition, float spd, int type);
+    Helper helper = Helper();
     void Update(float dt, Vector2 playerPosition, float rot);
     void Draw();
     void ReduceHealth();

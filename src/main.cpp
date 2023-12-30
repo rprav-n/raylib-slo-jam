@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "Settings.h"
+#include "Helper.h"
 #include "Player.h"
 #include "EnemySpawner.h"
 #include "Explosion.h"
@@ -12,6 +13,7 @@
 #include "MainScreen.h"
 #include "Transition.h"
 #include "AbilityScreen.h"
+#include "Ponit.h"
 #include <vector>
 
 using namespace std;
@@ -46,50 +48,15 @@ void UpdateParticles()
                     particles.end());
 }
 
-float GetRandomFloat(float min, float max)
-{
-    return min + (float)GetRandomValue(0, 10000) / 10000.0f * (max - min);
-}
-
-#define MAX_PARTICLES 100
-struct TrailParticle
-{
-    Vector2 position;
-    Color color;
-    float alpha;
-};
-
-TrailParticle trailParticles[MAX_PARTICLES];
-
-void UpdateAndDrawTrailEffect(Vector2 playerPosition)
-{
-
-    for (int i = MAX_PARTICLES - 1; i > 0; --i)
-    {
-        trailParticles[i].position = trailParticles[i - 1].position;
-        trailParticles[i].alpha = trailParticles[i - 1].alpha;
-    }
-
-    trailParticles[0].position = playerPosition;
-    trailParticles[0].alpha = 255.0f;
-
-    // Update particles
-    for (int i = 0; i < MAX_PARTICLES; ++i)
-    {
-        trailParticles[i].alpha -= 10.0f;
-        if (trailParticles[i].alpha <= 0)
-        {
-            trailParticles[i].alpha = 0;
-        }
-    }
-}
-
 class Game
 {
 private:
+    Font pixelFont = LoadFont("./assets/fonts/kenney_pixel.ttf");
     Texture2D crossHairTexture = LoadTexture("./assets/graphics/ui/cross_hair.png");
     Texture2D explosionTexture = LoadTexture("./assets/graphics/explosion/red.png");
     vector<Explosion> explosions;
+    vector<Point> points;
+    Helper helper = Helper();
 
     Player player = Player(Vector2{Settings::WINDOW_WIDTH / 2.f, Settings::WINDOW_HEIGHT / 2.f});
 
@@ -99,10 +66,12 @@ private:
 
     MainScreen mainScreen = MainScreen();
 
-    Transition transition = Transition(1.f);
+    Transition transition = Transition(2.f);
     AbilityScreen abilityScreen = AbilityScreen();
 
 public:
+    Camera2D camera = {};
+
     bool shouldCameraShake = false;
     void SetCameraShake(bool val)
     {
@@ -112,12 +81,10 @@ public:
     Game()
     {
         HideCursor();
-        for (int i = 0; i < MAX_PARTICLES; ++i)
-        {
-            trailParticles[i].position = {Settings::WINDOW_WIDTH / 2.f, Settings::WINDOW_HEIGHT / 2.f};
-            trailParticles[i].color = GetColor(0xa2ffcbff);
-            trailParticles[i].alpha = 255.f;
-        }
+        camera.target = Vector2{Settings::WINDOW_WIDTH / 2.0f, Settings::WINDOW_HEIGHT / 2.0f};
+        camera.offset = Vector2{Settings::WINDOW_WIDTH / 2.0f, Settings::WINDOW_HEIGHT / 2.0f};
+        camera.rotation = 0.0f;
+        camera.zoom = 1.0f;
     };
     Vector2 GetPlayerPositon()
     {
@@ -154,16 +121,14 @@ public:
                 asteroidSpawner.Draw();
                 enemySpawner.Draw();
 
-                // Draw TRAIL particles
-                // for (int i = 0; i < MAX_PARTICLES; ++i)
-                // {
-                //     DrawRectangleV(trailParticles[i].position, player.GetSize(), Fade(trailParticles[i].color, trailParticles[i].alpha / 255.0f));
-                // }
-
                 player.Draw();
                 for (int i = 0; i < explosions.size(); i++)
                 {
                     explosions[i].Draw();
+                }
+                for (int i = 0; i < points.size(); i++)
+                {
+                    points[i].Draw();
                 }
 
                 if (player.showAbilityScreen)
@@ -280,6 +245,7 @@ public:
                     {
                         enemySpawner.enemies[j].SetQueueFree(true);
                         SpanwExplosion(e.GetPosition());
+                        SpawnPoint(e.GetPosition(), 25);
                         soundManager.PlayExplosionSfx();
                         player.UpdateExpBarWidth();
                     }
@@ -312,17 +278,25 @@ public:
             {
                 player.ReduceHealth();
                 SpanwExplosion(e.GetPosition());
+                SpawnPoint(e.GetPosition(), 100);
                 enemySpawner.enemies[i].SetQueueFree(true);
                 soundManager.PlayExplosionSfx();
             }
         }
 
+        // update explosion
         for (int i = 0; i < explosions.size(); i++)
         {
             explosions[i].Update(dt);
         }
+        // update points
+        for (int i = 0; i < points.size(); i++)
+        {
+            points[i].Update();
+        }
 
         RemoveExplosion();
+        RemovePoints();
 
         if (IsKeyPressed(KEY_G))
         {
@@ -330,8 +304,6 @@ public:
         }
 
         UpdateParticles();
-
-        UpdateAndDrawTrailEffect(player.GetTopLeftPosition());
     }
 
     void SpanwExplosion(Vector2 position)
@@ -345,13 +317,19 @@ public:
             int ri = GetRandomValue(0, explosionColors.size() - 1);
             Particle particle;
             particle.position = position;
-            particle.speed = {GetRandomFloat(-1, 1), GetRandomFloat(-1, 1)};
+            particle.speed = {helper.GetRandomFloat(-1, 1), helper.GetRandomFloat(-1, 1)};
             particle.color = explosionColors[ri];
             particle.radius = (float)GetRandomValue(1, 10);
             particle.alpha = 255;
             particle.size = (float)GetRandomValue(1, 20);
             particles.push_back(particle);
         }
+    }
+
+    void SpawnPoint(Vector2 position, int val)
+    {
+        Point point = Point(pixelFont, position, val);
+        points.push_back(point);
     }
 
     void RemoveExplosion()
@@ -369,18 +347,28 @@ public:
             }
         }
     }
+
+    void RemovePoints()
+    {
+        for (int i = 0; i < points.size();)
+        {
+            Point p = points[i];
+            if (p.queueFree)
+            {
+                points.erase(points.begin() + i);
+            }
+            else
+            {
+                ++i;
+            }
+        }
+    }
 };
 
 int main()
 {
     InitWindow(Settings::WINDOW_WIDTH, Settings::WINDOW_HEIGHT, "Edge Of Void");
     InitAudioDevice();
-
-    Camera2D camera = {};
-    camera.target = Vector2{Settings::WINDOW_WIDTH / 2.0f, Settings::WINDOW_HEIGHT / 2.0f};
-    camera.offset = Vector2{Settings::WINDOW_WIDTH / 2.0f, Settings::WINDOW_HEIGHT / 2.0f};
-    camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
 
     Game game = Game();
 
@@ -425,16 +413,16 @@ int main()
             float offsetY = GetRandomValue(-shakeIntensity, shakeIntensity);
 
             // Apply shake effect to camera target
-            camera.target.x += offsetX;
-            camera.target.y += offsetY;
+            game.camera.target.x += offsetX;
+            game.camera.target.y += offsetY;
 
             shakeDuration -= GetFrameTime();
             game.SetCameraShake(false);
         }
         else
         {
-            camera.target = Vector2MoveTowards(camera.target, Vector2{Settings::WINDOW_WIDTH / 2.0f, Settings::WINDOW_HEIGHT / 2.0f},
-                                               100 * dt);
+            game.camera.target = Vector2MoveTowards(game.camera.target, Vector2{Settings::WINDOW_WIDTH / 2.0f, Settings::WINDOW_HEIGHT / 2.0f},
+                                                    100 * dt);
         }
 
         game.Update();
@@ -447,7 +435,7 @@ int main()
             DrawTexturePro(bgTexture, source, destTwo, Vector2{0, 0}, 0.f, WHITE);
             DrawTexturePro(bgTexture, source, destOne, Vector2{0, 0}, 0.f, WHITE);
 
-            BeginMode2D(camera);
+            BeginMode2D(game.camera);
             {
                 game.Draw();
                 DrawFPS(10, Settings::WINDOW_HEIGHT - 20);

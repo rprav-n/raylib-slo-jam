@@ -45,6 +45,7 @@ void Player::Update(double dt)
     {
         PlayLaserSfx();
         ShootBullet();
+        // KnockBack();
     }
 
     if (canAutoShoot)
@@ -235,10 +236,10 @@ void Player::ShootBullet()
     if (hasDoubleGun)
     {
 
-        Vector2 leftBulletDirection = Vector2Rotate({0, -1}, DEG2RAD * rotation);
+        Vector2 leftBulletDirection = Vector2Rotate({helper.GetRandomFloat(-0.1, 0.1), -1}, DEG2RAD * rotation);
         Bullet leftBullet = Bullet(red_bullet, leftGunPosition, leftBulletDirection, rotation, bulletSpeed);
 
-        Vector2 rightBulletDirection = Vector2Rotate({0, -1}, DEG2RAD * rotation);
+        Vector2 rightBulletDirection = Vector2Rotate({helper.GetRandomFloat(-0.1, 0.1), -1}, DEG2RAD * rotation);
         Bullet rightBullet = Bullet(red_bullet, rightGunPosition, rightBulletDirection, rotation, bulletSpeed);
 
         bullets.push_back(leftBullet);
@@ -256,10 +257,11 @@ void Player::ShootBullet()
     }
     else
     {
-        Vector2 bulletDirection = Vector2Rotate({0, -1}, DEG2RAD * rotation);
+        Vector2 bulletDirection = Vector2Rotate({helper.GetRandomFloat(-0.1, 0.1), -1}, DEG2RAD * rotation);
         Bullet bullet = Bullet(red_bullet, centerOrigin, bulletDirection, rotation, bulletSpeed);
         bullets.push_back(bullet);
     }
+    KnockBack();
 }
 
 Vector2 Player::GetPosition()
@@ -315,13 +317,11 @@ void Player::UpdateExpBarWidth()
     if (experienceBarSize.x >= MAX_EXP_BAR)
     {
         experienceBarSize.x = 0;
-        // TODO reduce expirence by 10% of previous
-        float reducedValue = expIncreaseBy * 0.1;
-        expIncreaseBy -= reducedValue;
-        printf("expIncreaseBy %f\n", expIncreaseBy);
-        if (expIncreaseBy < 30.f)
+        expIncreaseBy -= 10.f;
+
+        if (expIncreaseBy < 20.f)
         {
-            expIncreaseBy = 30.f;
+            expIncreaseBy = 20.f;
         }
         level++;
         showAbilityScreen = true;
@@ -335,4 +335,11 @@ void Player::GetFullHealth()
 void Player::GetFullShield()
 {
     shieldBarSize.x = MAX_SHIELD;
+}
+
+void Player::KnockBack()
+{
+    float rotationInRadians = DEG2RAD * rotation;
+    Vector2 knockbackVector = Vector2Rotate({0.0f, helper.GetRandomFloat(2.f, 4.f)}, rotationInRadians);
+    position = Vector2Add(position, knockbackVector);
 }

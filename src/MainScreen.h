@@ -20,8 +20,8 @@ private:
 
     Rectangle btnBounds = {position.x - dest.width / 2.f, position.y - dest.height / 2.f, dest.width, dest.height};
 
-    int btnState = 0;      // Button state: 0-NORMAL, 1-MOUSE_HOVER, 2-PRESSED
-    bool btnAction = true; // TODO make it false
+    int btnState = 0;       // Button state: 0-NORMAL, 1-MOUSE_HOVER, 2-PRESSED
+    bool btnAction = false; // TODO make it false
     Vector2 mousePoint = {0.0f, 0.0f};
     Vector2 titleDimension = MeasureTextEx(pixelFont, "Edge Of Void", 64.f, 0.f);
 
