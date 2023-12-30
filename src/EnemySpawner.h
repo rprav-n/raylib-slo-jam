@@ -20,6 +20,12 @@ public:
     float basicEnemyOneSpeed = 50.f;
     float basicEnemyTwoSpeed = 75.f;
     float basicEnemyThreeSpeed = 50.f;
+    float basicEnemyFourSpeed = 80.f;
+    float basicEnemyFiveSpeed = 20.f;
+
+    // Medium Enemies
+    float m_e_1 = 10.f;
+    float m_e_2 = 10.f;
 
 private:
     bool shouldSpawn = true;
@@ -28,5 +34,13 @@ private:
     Texture2D basicEnemy1 = LoadTexture("./assets/graphics/enemies/basic_enemy_1.png");
     Texture2D basicEnemy2 = LoadTexture("./assets/graphics/enemies/basic_enemy_2.png");
     Texture2D basicEnemy3 = LoadTexture("./assets/graphics/enemies/basic_enemy_3.png");
-    vector<Texture2D> enemyTextures = {basicEnemy1, basicEnemy2, basicEnemy3};
+    Texture2D basicEnemy4 = LoadTexture("./assets/graphics/enemies/basic_enemy_4.png");
+    Texture2D basicEnemy5 = LoadTexture("./assets/graphics/enemies/basic_enemy_5.png");
+
+    Texture2D mediumEnemy1 = LoadTexture("./assets/graphics/enemies/medium_enemy_1.png");
+    Texture2D mediumEnemy2 = LoadTexture("./assets/graphics/enemies/medium_enemy_2.png");
+
+    vector<Texture2D> enemyTextures = {basicEnemy1, basicEnemy2, basicEnemy3, basicEnemy4, basicEnemy5, mediumEnemy1, mediumEnemy2};
+
+    // vector<Texture2D> mediumEnemyTextures = {mediumEnemy1};
 };

@@ -3,7 +3,7 @@
 #include "raymath.h"
 #include <cstdio>
 
-Enemy::Enemy(Texture2D txtr, Vector2 spawnPosition, float spd, int type)
+Enemy::Enemy(Texture2D txtr, Vector2 spawnPosition, float spd, int type, float shootDelayTimer)
 {
     texture = txtr;
     position = spawnPosition;
@@ -15,6 +15,7 @@ Enemy::Enemy(Texture2D txtr, Vector2 spawnPosition, float spd, int type)
     origin = {scaledWidth / 2.f, scaledHeight / 2.f};
     speed = spd;
     enemyType = type;
+    shootSpanwnTimer = shootDelayTimer;
 
     switch (enemyType)
     {
@@ -26,6 +27,18 @@ Enemy::Enemy(Texture2D txtr, Vector2 spawnPosition, float spd, int type)
         break;
     case 2: // basic_enemy_3
         health = 2;
+        break;
+    case 3: // basic_enemy_4
+        health = 1;
+        break;
+    case 4: // basic_enemy_5
+        health = 3;
+        break;
+    case 5: // m_e_1
+        health = GetRandomValue(4, 8);
+        break;
+    case 6: // m_e_2
+        health = GetRandomValue(4, 8);
         break;
 
     default:
@@ -135,7 +148,7 @@ void Enemy::ReduceHealth()
 
 void Enemy::ShootBullet()
 {
-    Vector2 bulletDirection = Vector2Rotate({helper.GetRandomFloat(-0.1, 0.1), 1}, DEG2RAD * rotation);
+    Vector2 bulletDirection = Vector2Rotate({helper.GetRandomFloat(-0.2, 0.2), 1}, DEG2RAD * rotation);
     Bullet bullet = Bullet(greenBullet, position, bulletDirection, rotation, bulletSpeed, GREEN);
     bullets.push_back(bullet);
 }

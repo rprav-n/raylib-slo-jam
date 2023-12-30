@@ -14,4 +14,5 @@ void AbilityScreen::Draw()
     DrawText("5 - Full Health", 100.f, 350.f, 24.f, WHITE);
     DrawText("6 - Get Shield or Full Sheild", 100.f, 400.f, 24.f, WHITE);
     DrawText("7 - Shoot 3 Burst Bullets", 100.f, 450.f, 24.f, WHITE);
+    DrawText("8 - Hight Bullet Precision", 100.f, 500.f, 24.f, WHITE);
 }

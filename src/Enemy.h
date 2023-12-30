@@ -38,7 +38,7 @@ private:
     bool isFlickering = false;
 
 public:
-    Enemy(Texture2D txtr, Vector2 spawnPosition, float spd, int type);
+    Enemy(Texture2D txtr, Vector2 spawnPosition, float spd, int type, float shootDelayTimer);
     Helper helper = Helper();
     void Update(float dt, Vector2 playerPosition, float rot);
     void Draw();

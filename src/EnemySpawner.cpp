@@ -51,11 +51,13 @@ void EnemySpawner::SpawnEnemy()
 
     int randomEnemyIndex = GetRandomValue(0, enemyTextures.size() - 1);
     float speed = 100.f;
+    float shootSpanwnTimer = 5.f;
 
     switch (randomEnemyIndex)
     {
     case 0: // basic_enemy_1
         speed = basicEnemyOneSpeed;
+        shootSpanwnTimer = 4.f;
         break;
     case 1: // basic_enemy_2
         speed = basicEnemyTwoSpeed;
@@ -63,12 +65,27 @@ void EnemySpawner::SpawnEnemy()
     case 2: // basic_enemy_3
         speed = basicEnemyThreeSpeed;
         break;
+    case 3: // basic_enemy_4
+        speed = basicEnemyFourSpeed;
+        break;
+    case 4: // basic_enemy_5
+        speed = basicEnemyFiveSpeed;
+        shootSpanwnTimer = 2.f;
+        break;
+    case 5: // m_e_1
+        speed = m_e_1;
+        shootSpanwnTimer = 5.f;
+        break;
+    case 6: // m_e_2
+        speed = m_e_1;
+        shootSpanwnTimer = 5.f;
+        break;
 
     default:
         break;
     }
 
-    Enemy enemy = Enemy(enemyTextures[randomEnemyIndex], spawnPosition, speed, randomEnemyIndex);
+    Enemy enemy = Enemy(enemyTextures[randomEnemyIndex], spawnPosition, speed, randomEnemyIndex, shootSpanwnTimer);
     enemies.push_back(enemy);
 }
 
@@ -90,4 +107,6 @@ void EnemySpawner::DecreaseSpawnTimer()
     basicEnemyOneSpeed += 100 * 0.25f;
     basicEnemyTwoSpeed += 100 * 0.25f;
     basicEnemyThreeSpeed += 100 * 0.25f;
+    basicEnemyFourSpeed += 100 * 0.25f;
+    basicEnemyFiveSpeed += 100 * 0.25f;
 }

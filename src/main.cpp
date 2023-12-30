@@ -210,6 +210,13 @@ public:
                 player.showAbilityScreen = false;
                 enemySpawner.DecreaseSpawnTimer();
             }
+            else if (IsKeyPressed(KEY_EIGHT))
+            {
+                // High Precision fire bullet
+
+                player.showAbilityScreen = false;
+                enemySpawner.DecreaseSpawnTimer();
+            }
 
             return;
         }
