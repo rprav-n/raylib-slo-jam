@@ -60,6 +60,9 @@ private:
     Transition transition = Transition(2.f);
     AbilityScreen abilityScreen = AbilityScreen();
 
+    int score = 0;
+    float scoreFontSize = 50.f;
+
 public:
     Camera2D camera = {};
 
@@ -77,10 +80,12 @@ public:
         camera.rotation = 0.0f;
         camera.zoom = 1.0f;
     };
+
     Vector2 GetPlayerPositon()
     {
         return player.GetPosition();
     };
+
     void Update()
     {
         soundManager.UpdateMusic();
@@ -134,6 +139,8 @@ public:
                     // DrawCircleV(particle.position, particle.radius, particle.color);
                     DrawRectangleV(particle.position, Vector2{particle.size, particle.size}, particle.color);
                 }
+
+                DrawScore();
             }
             else
             {
@@ -242,9 +249,10 @@ public:
                     {
                         enemySpawner.enemies[j].SetQueueFree(true);
                         SpanwExplosion(e.GetPosition());
-                        SpawnPoint(e.GetPosition(), 25);
+                        SpawnPoint(e.GetPosition(), enemySpawner.enemies[j].score);
                         soundManager.PlayExplosionSfx();
                         player.UpdateExpBarWidth();
+                        IncreaseScore(enemySpawner.enemies[j].score);
                     }
                 }
             }
@@ -275,9 +283,10 @@ public:
             {
                 player.ReduceHealth();
                 SpanwExplosion(e.GetPosition());
-                SpawnPoint(e.GetPosition(), 100);
+                SpawnPoint(e.GetPosition(), enemySpawner.enemies[i].score);
                 enemySpawner.enemies[i].SetQueueFree(true);
                 soundManager.PlayExplosionSfx();
+                IncreaseScore(enemySpawner.enemies[i].score);
             }
         }
 
@@ -359,6 +368,21 @@ public:
                 ++i;
             }
         }
+    }
+
+    void DrawScore()
+    {
+        std::string scoreStr = std::to_string(score);
+        Vector2 fontSizeVec = MeasureTextEx(pixelFont, scoreStr.c_str(), scoreFontSize, 0.f);
+        Vector2 fontPos = {
+            Settings::WINDOW_WIDTH / 2.f - fontSizeVec.x / 2.f,
+            10.f};
+        DrawTextEx(pixelFont, scoreStr.c_str(), fontPos, scoreFontSize, 0.f, WHITE);
+    }
+
+    void IncreaseScore(int enemyScore)
+    {
+        score += enemyScore;
     }
 };
 

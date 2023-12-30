@@ -36,7 +36,7 @@ void EnemySpawner::Update(Vector2 playerPosition, float playerRotation)
 void EnemySpawner::SpawnEnemy()
 {
     Vector2 spawnPosition = {};
-    const float margin = 100.0f;
+    const float margin = 10.0f;
 
     if (GetRandomValue(0, 1) == 0)
     {

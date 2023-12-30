@@ -236,7 +236,7 @@ void Player::ShootBullet()
     float bulletXPrecision = helper.GetRandomFloat(-0.2, 0.2);
     if (hasHighPrecisionBullet)
     {
-        bulletXPrecision = helper.GetRandomFloat(-0.1, 0.1);
+        bulletXPrecision = 0;
     }
 
     if (hasDoubleGun)
@@ -259,27 +259,22 @@ void Player::ShootBullet()
             if (i < 0)
             {
                 bulletXPrecision = helper.GetRandomFloat(-0.2, -0.1);
-                if (hasHighPrecisionBullet)
-                {
-                    bulletXPrecision = helper.GetRandomFloat(-0.1, -0.1);
-                }
             }
             else if (i > 0)
             {
                 bulletXPrecision = helper.GetRandomFloat(0.1, 0.2);
-                if (hasHighPrecisionBullet)
-                {
-                    bulletXPrecision = helper.GetRandomFloat(0.1, 0.2);
-                }
             }
             else
             {
                 bulletXPrecision = helper.GetRandomFloat(-0.2, 0.2);
-                if (hasHighPrecisionBullet)
-                {
-                    bulletXPrecision = helper.GetRandomFloat(-0.1, 0.1);
-                }
             }
+
+            if (hasHighPrecisionBullet)
+            {
+                bulletXPrecision = i * 0.1f;
+            }
+
+            printf("bulletXPrecision %f\n", bulletXPrecision);
 
             Vector2 bulletDirection = Vector2Rotate({bulletXPrecision, -1}, DEG2RAD * rotation);
             Bullet bullet = Bullet(red_bullet, centerOrigin, bulletDirection, rotation, bulletSpeed, RED);

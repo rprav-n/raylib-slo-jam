@@ -21,29 +21,38 @@ Enemy::Enemy(Texture2D txtr, Vector2 spawnPosition, float spd, int type, float s
     {
     case 0: // basic_enemy_1
         health = 1;
+        score = 10;
         break;
     case 1: // basic_enemy_2
         health = 1;
+        score = 25;
         break;
     case 2: // basic_enemy_3
         health = 2;
+        score = 50;
         break;
     case 3: // basic_enemy_4
         health = 1;
+        score = 25;
         break;
     case 4: // basic_enemy_5
         health = 3;
+        score = 50;
         break;
     case 5: // m_e_1
         health = GetRandomValue(4, 8);
+        score = 100;
         break;
     case 6: // m_e_2
         health = GetRandomValue(4, 8);
+        score = 100;
         break;
 
     default:
         break;
     }
+
+    // health = 100.f; // TODO Remove this
 }
 
 void Enemy::Update(float dt, Vector2 playerPosition, float rot)
@@ -144,6 +153,7 @@ void Enemy::ReduceHealth()
 {
     health -= 1;
     isFlickering = true;
+    KnockBack();
 }
 
 void Enemy::ShootBullet()
@@ -151,4 +161,11 @@ void Enemy::ShootBullet()
     Vector2 bulletDirection = Vector2Rotate({helper.GetRandomFloat(-0.2, 0.2), 1}, DEG2RAD * rotation);
     Bullet bullet = Bullet(greenBullet, position, bulletDirection, rotation, bulletSpeed, GREEN);
     bullets.push_back(bullet);
+}
+
+void Enemy::KnockBack()
+{
+    float rotationInRadians = DEG2RAD * rotation;
+    Vector2 knockbackVector = Vector2Rotate({0.0f, -helper.GetRandomFloat(4.f, 8.f)}, rotationInRadians);
+    position = Vector2Add(position, knockbackVector);
 }

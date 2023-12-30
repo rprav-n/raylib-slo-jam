@@ -29,7 +29,6 @@ private:
 
     bool queueFree = false;
 
-    int enemyType = 0;
     int health = 1;
 
     // flicker variables
@@ -44,6 +43,10 @@ public:
     void Draw();
     void ReduceHealth();
     void ShootBullet();
+    void KnockBack();
+
+    int enemyType = 0;
+    int score = 0;
 
     Vector2 GetPosition();
 

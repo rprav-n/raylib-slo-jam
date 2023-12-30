@@ -77,7 +77,7 @@ public:
     bool shootRockets = false;
 
     // Burst bullets
-    bool hasBurstBullet = true;
+    bool hasBurstBullet = false;
     int burstCount = 1; // 1 is 1,1,1 | 2 - 1, 1,1, 1 and son on
 
     // High precision

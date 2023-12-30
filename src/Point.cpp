@@ -24,6 +24,5 @@ void Point::Update()
 void Point::Draw()
 {
     std::string intAsString = std::to_string(value);
-    const char *charPointer = intAsString.c_str();
-    DrawTextEx(pixelFont, charPointer, position, fontSize, 0.f, WHITE);
+    DrawTextEx(pixelFont, intAsString.c_str(), position, fontSize, 0.f, WHITE);
 }
