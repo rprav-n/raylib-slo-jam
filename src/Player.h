@@ -14,12 +14,21 @@ class Player
 public:
     Player(Vector2 pos);
     Vector2 GetMovementDirection();
+
     void Update(double dt);
     void Draw();
     void CheckCollisionBounds();
     void ShootBullet();
 
     Vector2 GetPosition();
+    Vector2 GetTopLeftPosition()
+    {
+        return topLeftOrigin;
+    };
+    Vector2 GetSize()
+    {
+        return Vector2{scaledWidth, scaledHeight};
+    };
     float GetRotation();
     Vector2 GetVectorRotation();
 
@@ -81,6 +90,8 @@ private:
     Texture2D heartIconTexture = LoadTexture("./assets/graphics/ui/heart_icon.png");
     Texture2D shieldIconTexture = LoadTexture("./assets/graphics/ui/shield_icon.png");
     Texture2D shieldTexture = LoadTexture("./assets/graphics/shield/shield_sheet.png");
+    Texture2D bombTexture = LoadTexture("./assets/graphics/ships/bomb.png");
+
     Sound laserSfx = LoadSound("./assets/sounds/laser_shoot.wav");
 
     Vector2 direction = {};

@@ -13,8 +13,6 @@ Player::Player(Vector2 pos)
 
     origin = {scaledWidth / 2.f,
               scaledHeight / 2.f};
-
-    printf("experienceBarSize============= %f\n", experienceBarSize.x);
 }
 
 Vector2 Player::GetMovementDirection()

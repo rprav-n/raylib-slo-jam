@@ -51,6 +51,39 @@ float GetRandomFloat(float min, float max)
     return min + (float)GetRandomValue(0, 10000) / 10000.0f * (max - min);
 }
 
+#define MAX_PARTICLES 100
+struct TrailParticle
+{
+    Vector2 position;
+    Color color;
+    float alpha;
+};
+
+TrailParticle trailParticles[MAX_PARTICLES];
+
+void UpdateAndDrawTrailEffect(Vector2 playerPosition)
+{
+
+    for (int i = MAX_PARTICLES - 1; i > 0; --i)
+    {
+        trailParticles[i].position = trailParticles[i - 1].position;
+        trailParticles[i].alpha = trailParticles[i - 1].alpha;
+    }
+
+    trailParticles[0].position = playerPosition;
+    trailParticles[0].alpha = 255.0f;
+
+    // Update particles
+    for (int i = 0; i < MAX_PARTICLES; ++i)
+    {
+        trailParticles[i].alpha -= 10.0f;
+        if (trailParticles[i].alpha <= 0)
+        {
+            trailParticles[i].alpha = 0;
+        }
+    }
+}
+
 class Game
 {
 private:
@@ -79,6 +112,12 @@ public:
     Game()
     {
         HideCursor();
+        for (int i = 0; i < MAX_PARTICLES; ++i)
+        {
+            trailParticles[i].position = {Settings::WINDOW_WIDTH / 2.f, Settings::WINDOW_HEIGHT / 2.f};
+            trailParticles[i].color = GetColor(0xa2ffcbff);
+            trailParticles[i].alpha = 255.f;
+        }
     };
     Vector2 GetPlayerPositon()
     {
@@ -114,6 +153,12 @@ public:
             {
                 asteroidSpawner.Draw();
                 enemySpawner.Draw();
+
+                // Draw TRAIL particles
+                // for (int i = 0; i < MAX_PARTICLES; ++i)
+                // {
+                //     DrawRectangleV(trailParticles[i].position, player.GetSize(), Fade(trailParticles[i].color, trailParticles[i].alpha / 255.0f));
+                // }
 
                 player.Draw();
                 for (int i = 0; i < explosions.size(); i++)
@@ -285,6 +330,8 @@ public:
         }
 
         UpdateParticles();
+
+        UpdateAndDrawTrailEffect(player.GetTopLeftPosition());
     }
 
     void SpanwExplosion(Vector2 position)
