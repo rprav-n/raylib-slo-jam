@@ -35,6 +35,12 @@ private:
     AbilityScreen abilityScreen = AbilityScreen();
 
 public:
+    bool shouldCameraShake = false;
+    void SetCameraShake(bool val)
+    {
+        shouldCameraShake = val;
+    };
+
     Game()
     {
         HideCursor();
@@ -229,12 +235,18 @@ public:
         }
 
         RemoveExplosion();
+
+        if (IsKeyPressed(KEY_G))
+        {
+            shouldCameraShake = true;
+        }
     }
 
     void SpanwExplosion(Vector2 position)
     {
         Explosion explosion = Explosion(explosionTexture, position);
         explosions.push_back(explosion);
+        shouldCameraShake = true;
     }
 
     void RemoveExplosion()
@@ -281,6 +293,9 @@ int main()
 
     float bgY = 0.f;
 
+    float shakeDuration = 0.0f;
+    float shakeIntensity = 4.0f;
+
     SetTargetFPS(60);
     while (!WindowShouldClose())
     {
@@ -290,6 +305,31 @@ int main()
         if (bgY >= scaledHeight)
         {
             bgY = 0.f;
+        }
+
+        if (game.shouldCameraShake)
+        {
+            shakeDuration = 0.5f;
+            shakeIntensity = GetRandomValue(1, 3);
+        }
+
+        // Camera Shake
+        if (shakeDuration > 0.0f)
+        {
+            float offsetX = GetRandomValue(-shakeIntensity, shakeIntensity);
+            float offsetY = GetRandomValue(-shakeIntensity, shakeIntensity);
+
+            // Apply shake effect to camera target
+            camera.target.x += offsetX;
+            camera.target.y += offsetY;
+
+            shakeDuration -= GetFrameTime();
+            game.SetCameraShake(false);
+        }
+        else
+        {
+            camera.target = Vector2MoveTowards(camera.target, Vector2{Settings::WINDOW_WIDTH / 2.0f, Settings::WINDOW_HEIGHT / 2.0f},
+                                               100 * dt);
         }
 
         game.Update();
