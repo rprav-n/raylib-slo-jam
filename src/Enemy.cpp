@@ -136,6 +136,6 @@ void Enemy::ReduceHealth()
 void Enemy::ShootBullet()
 {
     Vector2 bulletDirection = Vector2Rotate({helper.GetRandomFloat(-0.1, 0.1), 1}, DEG2RAD * rotation);
-    Bullet bullet = Bullet(greenBullet, position, bulletDirection, rotation, bulletSpeed);
+    Bullet bullet = Bullet(greenBullet, position, bulletDirection, rotation, bulletSpeed, GREEN);
     bullets.push_back(bullet);
 }

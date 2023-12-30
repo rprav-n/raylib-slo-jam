@@ -1,7 +1,7 @@
 #include "Bullet.h"
 #include "raylib.h"
 
-Bullet::Bullet(Texture txt, Vector2 pos, Vector2 dir, float rot, int spd)
+Bullet::Bullet(Texture txt, Vector2 pos, Vector2 dir, float rot, int spd, Color colr)
 {
     texture = txt;
     scaledWidth = txt.width * Settings::SCALE;
@@ -14,6 +14,13 @@ Bullet::Bullet(Texture txt, Vector2 pos, Vector2 dir, float rot, int spd)
     direction = dir;
     rotation = rot;
     speed = spd;
+
+    for (int i = 0; i < MAX_PARTICLES; ++i)
+    {
+        trailParticles[i].position = position;
+        trailParticles[i].color = colr;
+        trailParticles[i].alpha = 255.f;
+    }
 }
 
 bool Bullet::IsOutOfBounds()
@@ -35,14 +42,47 @@ void Bullet::Update(float dt)
     dest.y = position.y;
 
     centerPoint = position;
+    UpdateTrailParticles();
 }
 
 void Bullet::Draw()
 {
+    DrawTrailParticles();
     DrawTexturePro(texture, rect, dest, origin, rotation, WHITE);
 }
 
 Rectangle Bullet::GetRect()
 {
     return dest;
+}
+
+void Bullet::UpdateTrailParticles()
+{
+    for (int i = MAX_PARTICLES - 1; i > 0; --i)
+    {
+        trailParticles[i].position = trailParticles[i - 1].position;
+        trailParticles[i].alpha = trailParticles[i - 1].alpha;
+    }
+
+    trailParticles[0].position = position;
+    trailParticles[0].alpha = 255.0f;
+
+    // Update particles
+    for (int i = 0; i < MAX_PARTICLES; ++i)
+    {
+        trailParticles[i].alpha -= 20.0f;
+        if (trailParticles[i].alpha <= 0)
+        {
+            trailParticles[i].alpha = 0;
+        }
+    }
+}
+
+void Bullet::DrawTrailParticles()
+{
+    for (int i = 0; i < MAX_PARTICLES; ++i)
+    {
+        DrawRectangleV(trailParticles[i].position, {3.f, 3.f},
+                       Fade(trailParticles[i].color, trailParticles[i].alpha / 255.0f));
+    }
 }

@@ -14,19 +14,10 @@
 #include "Transition.h"
 #include "AbilityScreen.h"
 #include "Ponit.h"
+#include "Particle.h"
 #include <vector>
 
 using namespace std;
-
-struct Particle
-{
-    Vector2 position;
-    Vector2 speed;
-    Color color;
-    float radius;
-    float alpha;
-    float size;
-};
 
 vector<Particle> particles;
 vector<Color> explosionColors = {GetColor(0xfff392ff), GetColor(0xfff392ff), GetColor(0xfff392ff), GetColor(0xffa200ff), GetColor(0xffa200ff), GetColor(0xe35100ff)};
@@ -152,13 +143,12 @@ public:
         else
         {
             mainScreen.Draw();
+            // Draw mouse cursor - cross hair
+            Vector2 mousePos = GetMousePosition();
+            mousePos.x -= crossHairTexture.width / 2.f;
+            mousePos.y -= crossHairTexture.height / 2.f;
+            DrawTextureEx(crossHairTexture, mousePos, 0.f, Settings::SCALE, WHITE);
         }
-
-        // Draw mouse cursor - cross hair
-        Vector2 mousePos = GetMousePosition();
-        mousePos.x -= crossHairTexture.width / 2.f;
-        mousePos.y -= crossHairTexture.height / 2.f;
-        DrawTextureEx(crossHairTexture, mousePos, 0.f, Settings::SCALE, WHITE);
     }
 
     void GameStarted()

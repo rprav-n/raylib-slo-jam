@@ -237,10 +237,10 @@ void Player::ShootBullet()
     {
 
         Vector2 leftBulletDirection = Vector2Rotate({helper.GetRandomFloat(-0.1, 0.1), -1}, DEG2RAD * rotation);
-        Bullet leftBullet = Bullet(red_bullet, leftGunPosition, leftBulletDirection, rotation, bulletSpeed);
+        Bullet leftBullet = Bullet(red_bullet, leftGunPosition, leftBulletDirection, rotation, bulletSpeed, RED);
 
         Vector2 rightBulletDirection = Vector2Rotate({helper.GetRandomFloat(-0.1, 0.1), -1}, DEG2RAD * rotation);
-        Bullet rightBullet = Bullet(red_bullet, rightGunPosition, rightBulletDirection, rotation, bulletSpeed);
+        Bullet rightBullet = Bullet(red_bullet, rightGunPosition, rightBulletDirection, rotation, bulletSpeed, RED);
 
         bullets.push_back(leftBullet);
         bullets.push_back(rightBullet);
@@ -251,14 +251,14 @@ void Player::ShootBullet()
         for (int i = -burstCount; i <= burstCount; i++)
         {
             Vector2 bulletDirection = Vector2Rotate({i * 0.1f, -1}, DEG2RAD * rotation);
-            Bullet bullet = Bullet(red_bullet, centerOrigin, bulletDirection, rotation, bulletSpeed);
+            Bullet bullet = Bullet(red_bullet, centerOrigin, bulletDirection, rotation, bulletSpeed, RED);
             bullets.push_back(bullet);
         }
     }
     else
     {
         Vector2 bulletDirection = Vector2Rotate({helper.GetRandomFloat(-0.1, 0.1), -1}, DEG2RAD * rotation);
-        Bullet bullet = Bullet(red_bullet, centerOrigin, bulletDirection, rotation, bulletSpeed);
+        Bullet bullet = Bullet(red_bullet, centerOrigin, bulletDirection, rotation, bulletSpeed, RED);
         bullets.push_back(bullet);
     }
     KnockBack();

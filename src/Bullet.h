@@ -1,11 +1,14 @@
 #pragma once
 #include "raylib.h"
 #include "Settings.h"
+#include "Particle.h"
+
+#define MAX_PARTICLES 10
 
 class Bullet
 {
 public:
-    Bullet(Texture txt, Vector2 pos, Vector2 dir, float rot, int spd);
+    Bullet(Texture txt, Vector2 pos, Vector2 dir, float rot, int spd, Color colr);
     bool IsOutOfBounds();
     void Update(float dt);
     void Draw();
@@ -26,6 +29,10 @@ public:
     {
         return position;
     };
+
+    Particle trailParticles[MAX_PARTICLES];
+    void UpdateTrailParticles();
+    void DrawTrailParticles();
 
 private:
     Texture2D texture;
