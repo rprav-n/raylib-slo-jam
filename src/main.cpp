@@ -16,6 +16,41 @@
 
 using namespace std;
 
+struct Particle
+{
+    Vector2 position;
+    Vector2 speed;
+    Color color;
+    float radius;
+    float alpha;
+    float size;
+};
+
+vector<Particle> particles;
+vector<Color> explosionColors = {GetColor(0xfff392ff), GetColor(0xfff392ff), GetColor(0xfff392ff), GetColor(0xffa200ff), GetColor(0xffa200ff), GetColor(0xe35100ff)};
+
+void UpdateParticles()
+{
+    for (auto &particle : particles)
+    {
+        particle.position.x += particle.speed.x;
+        particle.position.y += particle.speed.y;
+        particle.radius *= 0.98f; // Shrink particles over time
+        particle.size *= 0.98f;   // Shrink particles over time
+        // particle.alpha *= 0.98f;  // Fade particles over time
+    }
+
+    particles.erase(std::remove_if(particles.begin(), particles.end(),
+                                   [](const Particle &particle)
+                                   { return particle.radius < 0.1f; }),
+                    particles.end());
+}
+
+float GetRandomFloat(float min, float max)
+{
+    return min + (float)GetRandomValue(0, 10000) / 10000.0f * (max - min);
+}
+
 class Game
 {
 private:
@@ -89,6 +124,14 @@ public:
                 if (player.showAbilityScreen)
                 {
                     abilityScreen.Draw();
+                }
+
+                // Draw particles
+                for (const auto &particle : particles)
+                {
+                    // DrawCircleV(particle.position, particle.radius, Fade(particle.color, particle.alpha / 255.0f));
+                    // DrawCircleV(particle.position, particle.radius, particle.color);
+                    DrawRectangleV(particle.position, Vector2{particle.size, particle.size}, particle.color);
                 }
             }
             else
@@ -240,6 +283,8 @@ public:
         {
             shouldCameraShake = true;
         }
+
+        UpdateParticles();
     }
 
     void SpanwExplosion(Vector2 position)
@@ -247,6 +292,19 @@ public:
         Explosion explosion = Explosion(explosionTexture, position);
         explosions.push_back(explosion);
         shouldCameraShake = true;
+
+        for (int i = 0; i < 20; ++i)
+        {
+            int ri = GetRandomValue(0, explosionColors.size() - 1);
+            Particle particle;
+            particle.position = position;
+            particle.speed = {GetRandomFloat(-1, 1), GetRandomFloat(-1, 1)};
+            particle.color = explosionColors[ri];
+            particle.radius = (float)GetRandomValue(1, 10);
+            particle.alpha = 255;
+            particle.size = (float)GetRandomValue(1, 20);
+            particles.push_back(particle);
+        }
     }
 
     void RemoveExplosion()
