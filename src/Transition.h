@@ -3,27 +3,18 @@
 class Transition
 {
 public:
-    Transition(float speed) : transitionSpeed(speed), transitionAlpha(1.0f) {}
+    Transition(float speed);
 
-    void Update()
-    {
-        transitionAlpha -= GetFrameTime() / transitionSpeed;
+    void Update();
+    void Draw();
+    void Reset();
 
-        if (transitionAlpha < 0.0f)
-            transitionAlpha = 0.0f;
-    }
-
-    void Draw() const
-    {
-        DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, transitionAlpha));
-    }
-
-    bool IsComplete() const
+    bool IsComplete()
     {
         return transitionAlpha <= 0.0f;
-    }
+    };
 
 private:
     float transitionSpeed;
-    float transitionAlpha;
+    float transitionAlpha = 1.f;
 };
