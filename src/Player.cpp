@@ -328,7 +328,7 @@ void Player::ReduceHealth()
         healthBarSize.x -= 10.f;
         if (healthBarSize.x <= 0.f)
         {
-            // TODO destroy player, game over
+            isDead = true;
         }
         else
         {

@@ -71,7 +71,7 @@ public:
 
     // Bullet
     int bulletSpeed = 400;
-    bool canAutoShoot = true;
+    bool canAutoShoot = false;
     float shootSpanwnTimer = 5.f;
     float shootTimer = 0.0f;
 };

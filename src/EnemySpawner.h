@@ -21,11 +21,11 @@ public:
     float basicEnemyTwoSpeed = 75.f;
     float basicEnemyThreeSpeed = 50.f;
     float basicEnemyFourSpeed = 80.f;
-    float basicEnemyFiveSpeed = 20.f;
+    float basicEnemyFiveSpeed = 30.f;
 
     // Medium Enemies
-    float m_e_1 = 10.f;
-    float m_e_2 = 10.f;
+    float m_e_1 = 20.f;
+    float m_e_2 = 20.f;
 
 private:
     bool shouldSpawn = true;

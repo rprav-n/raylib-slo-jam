@@ -36,7 +36,7 @@ void EnemySpawner::Update(Vector2 playerPosition, float playerRotation)
 void EnemySpawner::SpawnEnemy()
 {
     Vector2 spawnPosition = {};
-    const float margin = 10.0f;
+    const float margin = 30.0f;
 
     if (GetRandomValue(0, 1) == 0)
     {
@@ -57,7 +57,7 @@ void EnemySpawner::SpawnEnemy()
     {
     case 0: // basic_enemy_1
         speed = basicEnemyOneSpeed;
-        shootSpanwnTimer = 4.f;
+        shootSpanwnTimer = 6.f;
         break;
     case 1: // basic_enemy_2
         speed = basicEnemyTwoSpeed;
@@ -74,11 +74,11 @@ void EnemySpawner::SpawnEnemy()
         break;
     case 5: // m_e_1
         speed = m_e_1;
-        shootSpanwnTimer = 5.f;
+        shootSpanwnTimer = 8.f;
         break;
     case 6: // m_e_2
         speed = m_e_1;
-        shootSpanwnTimer = 5.f;
+        shootSpanwnTimer = 8.f;
         break;
 
     default:

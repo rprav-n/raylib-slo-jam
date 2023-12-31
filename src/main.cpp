@@ -10,14 +10,24 @@
 #include "SoundManager.h"
 #include "Asteroid.h"
 #include "AsteroidSpawner.h"
-#include "MainScreen.h"
+#include "StartScreen.h"
 #include "Transition.h"
 #include "AbilityScreen.h"
 #include "Ponit.h"
 #include "Particle.h"
+#include "GameOverScreen.h"
+#include "PauseScreen.h"
 #include <vector>
 
 using namespace std;
+
+enum GameState
+{
+    START,
+    PLAY,
+    PAUSE,
+    GAME_OVER
+};
 
 vector<Particle> particles;
 vector<Color> explosionColors = {GetColor(0xfff392ff), GetColor(0xfff392ff), GetColor(0xfff392ff), GetColor(0xffa200ff), GetColor(0xffa200ff), GetColor(0xe35100ff)};
@@ -41,9 +51,14 @@ void UpdateParticles()
 
 class Game
 {
+public:
+    GameState state = GameState::GAME_OVER;
+    StartScreen startScreen = StartScreen();
+    PauseScreen pauseScreen = PauseScreen();
+    GameOverScreen gameOverScreen = GameOverScreen();
+
 private:
     Font pixelFont = LoadFont("./assets/fonts/kenney_pixel.ttf");
-    Texture2D crossHairTexture = LoadTexture("./assets/graphics/ui/cross_hair.png");
     Texture2D explosionTexture = LoadTexture("./assets/graphics/explosion/red.png");
     vector<Explosion> explosions;
     vector<Point> points;
@@ -54,8 +69,6 @@ private:
     EnemySpawner enemySpawner = EnemySpawner();
     AsteroidSpawner asteroidSpawner = AsteroidSpawner();
     SoundManager soundManager = SoundManager();
-
-    MainScreen mainScreen = MainScreen();
 
     Transition transition = Transition(2.f);
     AbilityScreen abilityScreen = AbilityScreen();
@@ -77,7 +90,7 @@ public:
 
     Game()
     {
-        // HideCursor(); // TODO
+        HideCursor(); // TODO
         camera.target = Vector2{Settings::WINDOW_WIDTH / 2.0f, Settings::WINDOW_HEIGHT / 2.0f};
         camera.offset = Vector2{Settings::WINDOW_WIDTH / 2.0f, Settings::WINDOW_HEIGHT / 2.0f};
         camera.rotation = 0.0f;
@@ -93,76 +106,58 @@ public:
     {
         soundManager.UpdateMusic();
 
-        if (mainScreen.isPlayPressed())
+        switch (state)
         {
-            if (transition.IsComplete())
-            {
-                GameStarted();
-            }
-            else
-            {
-                transition.Update();
-            }
-        }
-        else
-        {
-            mainScreen.Update();
+        case GameState::START:
+            startScreen.Update();
+            if (startScreen.IsPlayBtnPressed())
+                state = GameState::PLAY;
+            break;
+        case GameState::PLAY:
+            GameUpdate();
+            break;
+        case GameState::PAUSE:
+            pauseScreen.Update();
+            break;
+        case GameState::GAME_OVER:
+            gameOverScreen.Update();
+            break;
+
+        default:
+            break;
         }
     };
 
     void Draw()
     {
-        if (mainScreen.isPlayPressed())
+        switch (state)
         {
-
-            if (transition.IsComplete())
-            {
-                asteroidSpawner.Draw();
-                enemySpawner.Draw();
-
-                player.Draw();
-                for (int i = 0; i < explosions.size(); i++)
-                {
-                    explosions[i].Draw();
-                }
-                for (int i = 0; i < points.size(); i++)
-                {
-                    points[i].Draw();
-                }
-
-                if (player.showAbilityScreen)
-                {
-                    abilityScreen.Draw();
-                }
-
-                // Draw particles
-                for (const auto &particle : particles)
-                {
-                    // DrawCircleV(particle.position, particle.radius, Fade(particle.color, particle.alpha / 255.0f));
-                    // DrawCircleV(particle.position, particle.radius, particle.color);
-                    DrawRectangleV(particle.position, Vector2{particle.size, particle.size}, particle.color);
-                }
-
-                DrawScore();
-            }
-            else
-            {
-                transition.Draw();
-            }
-        }
-        else
-        {
-            mainScreen.Draw();
-            // Draw mouse cursor - cross hair
-            Vector2 mousePos = GetMousePosition();
-            mousePos.x -= crossHairTexture.width / 2.f;
-            mousePos.y -= crossHairTexture.height / 2.f;
-            DrawTextureEx(crossHairTexture, mousePos, 0.f, Settings::SCALE, WHITE);
+        case GameState::START:
+            startScreen.Draw();
+            break;
+        case GameState::PLAY:
+            GameDraw();
+            break;
+        case GameState::PAUSE:
+            GameDraw();
+            pauseScreen.Draw();
+            break;
+        case GameState::GAME_OVER:
+            GameDraw();
+            gameOverScreen.Draw();
+            break;
+        default:
+            break;
         }
     }
 
-    void GameStarted()
+    void GameUpdate()
     {
+        if (player.isDead)
+        {
+            gameOverScreen.UpdateScore(score);
+            state = GameState::GAME_OVER;
+        }
         if (player.showAbilityScreen)
         {
             // TODO
@@ -315,6 +310,46 @@ public:
         UpdateParticles();
     }
 
+    void GameDraw()
+    {
+
+        if (IsKeyPressed(KEY_P))
+        {
+            state = state == GameState::PLAY ? GameState::PAUSE : GameState::PLAY;
+        }
+
+        asteroidSpawner.Draw();
+        enemySpawner.Draw();
+        if (!player.isDead)
+        {
+            player.Draw();
+        }
+
+        for (int i = 0; i < explosions.size(); i++)
+        {
+            explosions[i].Draw();
+        }
+        for (int i = 0; i < points.size(); i++)
+        {
+            points[i].Draw();
+        }
+
+        if (player.showAbilityScreen)
+        {
+            abilityScreen.Draw();
+        }
+
+        // Draw particles
+        for (const auto &particle : particles)
+        {
+            // DrawCircleV(particle.position, particle.radius, Fade(particle.color, particle.alpha / 255.0f));
+            // DrawCircleV(particle.position, particle.radius, particle.color);
+            DrawRectangleV(particle.position, Vector2{particle.size, particle.size}, particle.color);
+        }
+
+        DrawScore();
+    };
+
     void SpanwExplosion(Vector2 position)
     {
         Explosion explosion = Explosion(explosionTexture, position);
@@ -397,6 +432,9 @@ int main()
 
     Game game = Game();
 
+    // cross hair
+    Texture2D crossHairTexture = LoadTexture("./assets/graphics/ui/cross_hair.png");
+
     // Background
     Texture2D bgTexture = LoadTexture("./assets/graphics/environment/bg.png");
     float width = bgTexture.width;
@@ -415,7 +453,7 @@ int main()
     float shakeIntensity = 4.0f;
 
     SetTargetFPS(60);
-    while (!WindowShouldClose())
+    while (!WindowShouldClose() && !game.startScreen.IsCloseBtnPressed())
     {
         float dt = GetFrameTime();
         bgY += dt * 400.f;
@@ -467,6 +505,12 @@ int main()
             }
             EndMode2D();
         }
+
+        // Draw mouse cursor - cross hair
+        Vector2 mousePos = GetMousePosition();
+        mousePos.x -= crossHairTexture.width / 2.f;
+        mousePos.y -= crossHairTexture.height / 2.f;
+        DrawTextureEx(crossHairTexture, mousePos, 0.f, Settings::SCALE, WHITE);
 
         EndDrawing();
     }
