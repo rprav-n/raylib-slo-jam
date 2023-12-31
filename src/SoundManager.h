@@ -5,6 +5,7 @@ class SoundManager
 {
 private:
     Sound explosionSfx = LoadSound("./assets/sounds/explosion.wav");
+    Sound pointSfx = LoadSound("./assets/sounds/coin.wav");
     Music bgMusic = LoadMusicStream("./assets/music/bg.ogg");
 
 public:
@@ -21,5 +22,10 @@ public:
     void PlayExplosionSfx()
     {
         PlaySound(explosionSfx);
+    };
+
+    void PlayPointSfx()
+    {
+        PlaySound(pointSfx);
     };
 };

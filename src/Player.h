@@ -73,8 +73,11 @@ public:
     // Shield
     bool hasShied = false;
 
-    // Shoot rockets
+    // Shoot rockets every 2sec and hit the nearby enemy
     bool shootRockets = false;
+
+    // Bomb - spanwn bomb every 5 sec
+    bool deployBomb = true;
 
     // Burst bullets
     bool hasBurstBullet = false;

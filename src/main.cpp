@@ -63,6 +63,9 @@ private:
     int score = 0;
     float scoreFontSize = 50.f;
 
+    // Shoot rocket timer
+    // float spawnRocketTimer = 2.f;
+
 public:
     Camera2D camera = {};
 
@@ -74,7 +77,7 @@ public:
 
     Game()
     {
-        HideCursor();
+        // HideCursor(); // TODO
         camera.target = Vector2{Settings::WINDOW_WIDTH / 2.0f, Settings::WINDOW_HEIGHT / 2.0f};
         camera.offset = Vector2{Settings::WINDOW_WIDTH / 2.0f, Settings::WINDOW_HEIGHT / 2.0f};
         camera.rotation = 0.0f;
@@ -382,6 +385,7 @@ public:
 
     void IncreaseScore(int enemyScore)
     {
+        soundManager.PlayPointSfx();
         score += enemyScore;
     }
 };
