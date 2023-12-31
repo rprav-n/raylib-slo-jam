@@ -52,7 +52,7 @@ void UpdateParticles()
 class Game
 {
 public:
-    GameState state = GameState::GAME_OVER;
+    GameState state = GameState::START;
     StartScreen startScreen = StartScreen();
     PauseScreen pauseScreen = PauseScreen();
     GameOverScreen gameOverScreen = GameOverScreen();
@@ -70,7 +70,7 @@ private:
     AsteroidSpawner asteroidSpawner = AsteroidSpawner();
     SoundManager soundManager = SoundManager();
 
-    Transition transition = Transition(2.f);
+    Transition transition = Transition(4.f);
     AbilityScreen abilityScreen = AbilityScreen();
 
     int score = 0;
@@ -109,18 +109,35 @@ public:
         switch (state)
         {
         case GameState::START:
-            startScreen.Update();
-            if (startScreen.IsPlayBtnPressed())
-                state = GameState::PLAY;
+            transition.Update();
+            if (transition.IsComplete())
+            {
+                startScreen.Update();
+                if (startScreen.IsPlayBtnPressed())
+                {
+                    state = GameState::PLAY;
+                    transition.Reset();
+                }
+            }
+
             break;
         case GameState::PLAY:
-            GameUpdate();
+            transition.Update();
+            if (transition.IsComplete())
+            {
+                GameUpdate();
+            }
             break;
         case GameState::PAUSE:
             pauseScreen.Update();
             break;
         case GameState::GAME_OVER:
-            gameOverScreen.Update();
+            transition.Update();
+            if (transition.IsComplete())
+            {
+                gameOverScreen.Update();
+            }
+
             break;
 
         default:
@@ -133,18 +150,30 @@ public:
         switch (state)
         {
         case GameState::START:
-            startScreen.Draw();
+            transition.Draw();
+            if (transition.IsComplete())
+            {
+                startScreen.Draw();
+            }
             break;
         case GameState::PLAY:
-            GameDraw();
+            transition.Draw();
+            if (transition.IsComplete())
+            {
+                GameDraw();
+            }
             break;
         case GameState::PAUSE:
             GameDraw();
             pauseScreen.Draw();
             break;
         case GameState::GAME_OVER:
-            GameDraw();
-            gameOverScreen.Draw();
+            transition.Draw();
+            if (transition.IsComplete())
+            {
+                GameDraw();
+                gameOverScreen.Draw();
+            }
             break;
         default:
             break;
@@ -316,6 +345,7 @@ public:
         if (IsKeyPressed(KEY_P))
         {
             state = state == GameState::PLAY ? GameState::PAUSE : GameState::PLAY;
+            transition.Reset();
         }
 
         asteroidSpawner.Draw();
