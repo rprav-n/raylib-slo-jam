@@ -40,7 +40,6 @@ public:
     float SHIP_RADIUS = 12.f;
     float SHIELD_RADIUS = 32.f;
     float radius = 12.f;
-    bool isDashing = false;
     bool showAbilityScreen = false;
 
     void PlayLaserSfx();
@@ -68,7 +67,16 @@ public:
     float speed = 5.f;
 
     // Dashing
+    bool isDashing = false;
     bool hasDash = false;
+    int dashParticlesCount = 50;
+    Particle dashingParticles[50];
+    void UpdateDashingParticles();
+    void DrawDashingParticles();
+    float maxDashDuration = 0.4f;
+    float currentDashDuration = 0.0f;
+    float dashCooldown = 2.f;
+    float timeSinceLastDash = 0.f;
 
     // Shield
     bool hasShied = false;

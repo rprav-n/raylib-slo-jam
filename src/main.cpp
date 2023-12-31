@@ -70,7 +70,7 @@ private:
     AsteroidSpawner asteroidSpawner = AsteroidSpawner();
     SoundManager soundManager = SoundManager();
 
-    Transition transition = Transition(4.f);
+    Transition transition = Transition(2.f);
     AbilityScreen abilityScreen = AbilityScreen();
 
     int score = 0;
@@ -308,7 +308,10 @@ public:
             Enemy e = enemySpawner.enemies[i];
             if (CheckCollisionCircles(player.centerPoint, player.radius, e.centerPoint, e.radius))
             {
-                player.ReduceHealth();
+                if (!player.isDashing)
+                {
+                    player.ReduceHealth();
+                }
                 SpanwExplosion(e.GetPosition());
                 SpawnPoint(e.GetPosition(), enemySpawner.enemies[i].score);
                 enemySpawner.enemies[i].SetQueueFree(true);

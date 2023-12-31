@@ -13,6 +13,54 @@ Player::Player(Vector2 pos)
 
     origin = {scaledWidth / 2.f,
               scaledHeight / 2.f};
+
+    for (int i = 0; i < dashParticlesCount; ++i)
+    {
+        dashingParticles[i].position = {centerOrigin.x, centerOrigin.y};
+        dashingParticles[i].color = green;
+        dashingParticles[i].alpha = 100.0f;
+    }
+}
+
+void Player::UpdateDashingParticles()
+{
+
+    for (int i = dashParticlesCount - 1; i > 0; --i)
+    {
+        dashingParticles[i].position = dashingParticles[i - 1].position;
+        dashingParticles[i].alpha = dashingParticles[i - 1].alpha;
+    }
+
+    dashingParticles[0].position = {centerOrigin.x, centerOrigin.y};
+    dashingParticles[0].alpha = 255.0f;
+
+    for (int i = 0; i < dashParticlesCount; ++i)
+    {
+        dashingParticles[i].alpha -= 20.0f;
+        if (dashingParticles[i].alpha <= 0)
+        {
+            dashingParticles[i].alpha = 0;
+        }
+    }
+}
+
+void Player::DrawDashingParticles()
+{
+    if (!isDashing)
+        return;
+    for (int i = 0; i < dashParticlesCount; ++i)
+    {
+        // DrawRectangleV(dashingParticles[i].position, {scaledWidth / 1.25f, scaledHeight / 1.25f},
+        //                Fade(dashingParticles[i].color, dashingParticles[i].alpha / 255.0f));
+
+        float w = scaledWidth / 1.75f;
+        float h = scaledHeight / 1.75f;
+        DrawRectanglePro(
+            {dashingParticles[i].position.x, dashingParticles[i].position.y, w, h},
+            {w / 2.f, h / 2.f},
+            0.f,
+            Fade(dashingParticles[i].color, dashingParticles[i].alpha / 255.0f));
+    }
 }
 
 Vector2 Player::GetMovementDirection()
@@ -32,6 +80,7 @@ Vector2 Player::GetMovementDirection()
 
 void Player::Update(double dt)
 {
+    timeSinceLastDash += dt;
     if (hasShied)
     {
         radius = SHIELD_RADIUS;
@@ -59,9 +108,10 @@ void Player::Update(double dt)
         }
     }
 
-    if (IsKeyPressed(KEY_LEFT_SHIFT) && hasDash)
+    if (IsKeyPressed(KEY_LEFT_SHIFT) && hasDash && timeSinceLastDash > dashCooldown)
     {
         isDashing = true;
+        timeSinceLastDash = 0.0f;
     }
 
     if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))
@@ -86,12 +136,16 @@ void Player::Update(double dt)
     // Shift to dash
     if (isDashing)
     {
-        // TODO
-        // Implement dash shaders
         velocity = {};
         targetVelocity = Vector2Scale(targetVelocity, 100);
         velocity = Vector2MoveTowards(velocity, targetVelocity, 50 * acceleration * dt);
-        isDashing = false;
+        currentDashDuration += dt;
+
+        if (currentDashDuration >= maxDashDuration)
+        {
+            isDashing = false;
+            currentDashDuration = 0.0f;
+        }
     }
     else
     {
@@ -152,6 +206,8 @@ void Player::Update(double dt)
     booster.Update(dt, position, rotation);
 
     centerPoint = position;
+
+    UpdateDashingParticles();
 }
 
 void Player::CheckCollisionBounds()
@@ -177,6 +233,7 @@ void Player::CheckCollisionBounds()
 
 void Player::Draw()
 {
+    DrawDashingParticles();
     for (int i = 0; i < bullets.size(); i++)
     {
         bullets[i].Draw();

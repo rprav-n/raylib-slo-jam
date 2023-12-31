@@ -15,6 +15,6 @@ public:
     };
 
 private:
-    float transitionSpeed;
+    float transitionSpeed = {};
     float transitionAlpha = 1.f;
 };
