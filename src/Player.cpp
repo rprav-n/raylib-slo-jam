@@ -402,9 +402,9 @@ void Player::UpdateExpBarWidth()
         experienceBarSize.x = 0;
         expIncreaseBy -= 10.f;
 
-        if (expIncreaseBy < 20.f)
+        if (expIncreaseBy < 10.f)
         {
-            expIncreaseBy = 20.f;
+            expIncreaseBy = 10.f;
         }
         level++;
         showAbilityScreen = true;

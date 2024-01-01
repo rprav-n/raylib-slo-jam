@@ -8,7 +8,7 @@ class StartScreen
 {
 
 private:
-    Font pixelFont = LoadFont("./assets/fonts/kenney_pixel.ttf");
+    Font pixelFont = LoadFont("./assets/fonts/score.ttf");
 
     Texture2D playBtnTexture = LoadTexture("./assets/graphics/ui/play_btn2.png");
     Texture2D closeBtnTexture = LoadTexture("./assets/graphics/ui/close_btn.png");

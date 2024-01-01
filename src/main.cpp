@@ -52,13 +52,13 @@ void UpdateParticles()
 class Game
 {
 public:
-    GameState state = GameState::START;
+    GameState state = GameState::PLAY;
     StartScreen startScreen = StartScreen();
     PauseScreen pauseScreen = PauseScreen();
     GameOverScreen gameOverScreen = GameOverScreen();
 
 private:
-    Font pixelFont = LoadFont("./assets/fonts/kenney_pixel.ttf");
+    Font pixelFont = LoadFont("./assets/fonts/score.ttf");
     Texture2D explosionTexture = LoadTexture("./assets/graphics/explosion/red.png");
     vector<Explosion> explosions;
     vector<Point> points;
@@ -534,7 +534,7 @@ int main()
             BeginMode2D(game.camera);
             {
                 game.Draw();
-                DrawFPS(10, Settings::WINDOW_HEIGHT - 20);
+                // DrawFPS(10, Settings::WINDOW_HEIGHT - 20);
             }
             EndMode2D();
         }

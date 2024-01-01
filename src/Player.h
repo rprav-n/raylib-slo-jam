@@ -40,7 +40,7 @@ public:
     float SHIP_RADIUS = 12.f;
     float SHIELD_RADIUS = 32.f;
     float radius = 12.f;
-    bool showAbilityScreen = false;
+    bool showAbilityScreen = true;
 
     void PlayLaserSfx();
     void ReduceHealth();
@@ -159,7 +159,7 @@ private:
 
     // Expirence
     int level = 0;
-    float expIncreaseBy = 100.f;
+    float expIncreaseBy = 250.f;
 
     float MAX_EXP_BAR = Settings::WINDOW_WIDTH - 100.f;
     Vector2 experienceBarPos = {50.f, Settings::WINDOW_HEIGHT - 30.f};

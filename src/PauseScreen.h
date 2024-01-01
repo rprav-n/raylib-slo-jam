@@ -8,7 +8,7 @@ public:
     void Draw();
 
 private:
-    Font pixelFont = LoadFont("./assets/fonts/kenney_pixel.ttf");
+    Font pixelFont = LoadFont("./assets/fonts/score.ttf");
 
     Vector2 titleDimension = MeasureTextEx(pixelFont, "PAUSED", 64.f, 0.f);
 };

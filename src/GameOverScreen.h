@@ -23,7 +23,7 @@ public:
     std::string yourScoreText = "Your Score:";
 
 private:
-    Font pixelFont = LoadFont("./assets/fonts/kenney_pixel.ttf");
+    Font pixelFont = LoadFont("./assets/fonts/score.ttf");
 
     Vector2 titleDimension = MeasureTextEx(pixelFont, "Game Over", 72.f, 0.f);
     Vector2 yourScoreDimension = MeasureTextEx(pixelFont, "Your Score", 32.f, 0.f);
