@@ -8,6 +8,7 @@ struct UpgradeOption
 {
     Texture2D texture;
     const char *description;
+    int quantity;
 };
 
 class AbilityScreen
@@ -22,15 +23,16 @@ private:
     // DrawText("6 - Get Shield or Full Sheild", 100.f, 400.f, 24.f, WHITE);
     // DrawText("7 - Shoot 3 Burst Bullets", 100.f, 450.f, 24.f, WHITE);
     // DrawText("8 - Hight Bullet Precision", 100.f, 500.f, 24.f, WHITE);
+
     vector<UpgradeOption> upgradeOptions = {
-        {LoadTexture("./assets/graphics/ui/ability_ui/auto_shoot.png"), "Auto Shoot"},
-        {LoadTexture("./assets/graphics/ui/ability_ui/auto_shoot.png"), "Double Bullet"},
-        {LoadTexture("./assets/graphics/ui/ability_ui/auto_shoot.png"), "Dashing"},
-        {LoadTexture("./assets/graphics/ui/ability_ui/auto_shoot.png"), "Increase Auto Shoot Speed by 10%"},
-        {LoadTexture("./assets/graphics/ui/ability_ui/auto_shoot.png"), "Full Health"},
-        {LoadTexture("./assets/graphics/ui/ability_ui/auto_shoot.png"), "Get Shield or Full Sheild"},
-        {LoadTexture("./assets/graphics/ui/ability_ui/auto_shoot.png"), "Shoot 3 Burst Bullets"},
-        {LoadTexture("./assets/graphics/ui/ability_ui/auto_shoot.png"), "Hight Bullet Precision"},
+        {LoadTexture("./assets/graphics/ui/ability_ui/1.png"), "Auto Fire", 1},
+        {LoadTexture("./assets/graphics/ui/ability_ui/2.png"), "Double Shot", 1},
+        {LoadTexture("./assets/graphics/ui/ability_ui/3.png"), "Shift to Dash", 1},
+        {LoadTexture("./assets/graphics/ui/ability_ui/4.png"), "Firerate +10%", 4},
+        {LoadTexture("./assets/graphics/ui/ability_ui/5.png"), "Full Heal", -1},
+        {LoadTexture("./assets/graphics/ui/ability_ui/6.png"), "Sheild", -1},
+        {LoadTexture("./assets/graphics/ui/ability_ui/7.png"), "Triple Shot", 1},
+        {LoadTexture("./assets/graphics/ui/ability_ui/8.png"), "Precision +10%", 4},
     };
 
     Font textFont = LoadFont("./assets/fonts/score.ttf");
@@ -44,4 +46,6 @@ public:
     const float spacing = 40.f;
     const int columns = 2;
     int columnCount = 0;
+
+    int pressedNumber = -1;
 };

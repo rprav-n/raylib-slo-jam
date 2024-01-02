@@ -32,4 +32,7 @@ private:
     Vector2 scorePos = {
         Settings::WINDOW_WIDTH / 2.f - fontSizeVec.x / 2.f,
         Settings::WINDOW_HEIGHT / 2.f + 10};
+
+    float textXPos = 100.f;
+    Vector2 textSize = MeasureTextEx(pixelFont, "Press \"x\" to play again", 24.f, 0.f);
 };

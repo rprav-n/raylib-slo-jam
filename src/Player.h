@@ -33,6 +33,19 @@ public:
     };
     float GetRotation();
     Vector2 GetVectorRotation();
+    void PlayLaserSfx();
+    void ReduceHealth();
+    void UpdateExpBarWidth();
+    void GetFullHealth();
+    void GetFullShield();
+    void KnockBack();
+    void UpdateDashingParticles();
+    void DrawDashingParticles();
+    void Reset();
+    float GetRadius()
+    {
+        return radius;
+    };
 
     vector<Bullet> bullets;
 
@@ -40,14 +53,7 @@ public:
     float SHIP_RADIUS = 12.f;
     float SHIELD_RADIUS = 32.f;
     float radius = 12.f;
-    bool showAbilityScreen = true;
-
-    void PlayLaserSfx();
-    void ReduceHealth();
-    void UpdateExpBarWidth();
-    void GetFullHealth();
-    void GetFullShield();
-    void KnockBack();
+    bool showAbilityScreen = false;
 
     // bullet speed
     int bulletSpeed = 800;
@@ -71,8 +77,7 @@ public:
     bool hasDash = false;
     int dashParticlesCount = 50;
     Particle dashingParticles[50];
-    void UpdateDashingParticles();
-    void DrawDashingParticles();
+
     float maxDashDuration = 0.4f;
     float currentDashDuration = 0.0f;
     float dashCooldown = 2.f;
@@ -92,12 +97,7 @@ public:
     int burstCount = 1; // 1 is 1,1,1 | 2 - 1, 1,1, 1 and son on
 
     // High precision
-    bool hasHighPrecisionBullet = false;
-
-    float GetRadius()
-    {
-        return radius;
-    };
+    float bulltetXAccuracy = 0.3f;
 
     bool isDead = false;
 
@@ -159,7 +159,7 @@ private:
 
     // Expirence
     int level = 0;
-    float expIncreaseBy = 250.f;
+    float expIncreaseBy = 100.f;
 
     float MAX_EXP_BAR = Settings::WINDOW_WIDTH - 100.f;
     Vector2 experienceBarPos = {50.f, Settings::WINDOW_HEIGHT - 30.f};

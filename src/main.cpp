@@ -52,7 +52,7 @@ void UpdateParticles()
 class Game
 {
 public:
-    GameState state = GameState::PLAY;
+    GameState state = GameState::GAME_OVER;
     StartScreen startScreen = StartScreen();
     PauseScreen pauseScreen = PauseScreen();
     GameOverScreen gameOverScreen = GameOverScreen();
@@ -136,6 +136,10 @@ public:
             if (transition.IsComplete())
             {
                 gameOverScreen.Update();
+                // if (IsKeyReleased(KEY_X))
+                // {
+                //     state = GameState::PLAY;
+                // }
             }
 
             break;
@@ -191,26 +195,26 @@ public:
         {
             // TODO
             // Control all the ability clicks here
-            if (IsKeyPressed(KEY_ONE))
+            if (abilityScreen.pressedNumber == 1)
             {
                 player.canAutoShoot = true;
                 enemySpawner.DecreaseSpawnTimer();
                 player.showAbilityScreen = false;
             }
-            else if (IsKeyPressed(KEY_TWO))
+            else if (abilityScreen.pressedNumber == 2)
             {
                 player.hasDoubleGun = true;
                 player.hasBurstBullet = false;
                 enemySpawner.DecreaseSpawnTimer();
                 player.showAbilityScreen = false;
             }
-            else if (IsKeyPressed(KEY_THREE))
+            else if (abilityScreen.pressedNumber == 3)
             {
                 player.hasDash = true;
                 enemySpawner.DecreaseSpawnTimer();
                 player.showAbilityScreen = false;
             }
-            else if (IsKeyPressed(KEY_FOUR))
+            else if (abilityScreen.pressedNumber == 4)
             {
                 // TODO reduce by only 10%
                 player.shootSpanwnTimer -= 0.05f;
@@ -221,14 +225,14 @@ public:
                 enemySpawner.DecreaseSpawnTimer();
                 player.showAbilityScreen = false;
             }
-            else if (IsKeyPressed(KEY_FIVE))
+            else if (abilityScreen.pressedNumber == 5)
             {
                 // Get full health
                 player.GetFullHealth();
                 player.showAbilityScreen = false;
                 enemySpawner.DecreaseSpawnTimer();
             }
-            else if (IsKeyPressed(KEY_SIX))
+            else if (abilityScreen.pressedNumber == 6)
             {
                 // Get Shield or Full Sheild
                 player.hasShied = true;
@@ -236,7 +240,7 @@ public:
                 player.showAbilityScreen = false;
                 enemySpawner.DecreaseSpawnTimer();
             }
-            else if (IsKeyPressed(KEY_SEVEN))
+            else if (abilityScreen.pressedNumber == 7)
             {
                 // Shoot 3 Burst Bullets
                 player.hasDoubleGun = false;
@@ -244,13 +248,19 @@ public:
                 player.showAbilityScreen = false;
                 enemySpawner.DecreaseSpawnTimer();
             }
-            else if (IsKeyPressed(KEY_EIGHT))
+            else if (abilityScreen.pressedNumber == 8)
             {
-                // High Precision fire bullet
-
+                // High Precision/Accuracy fire bullet
+                player.bulltetXAccuracy -= 0.5f;
+                if (player.bulltetXAccuracy <= 0.0f)
+                {
+                    player.bulltetXAccuracy = 0.0f;
+                }
                 player.showAbilityScreen = false;
                 enemySpawner.DecreaseSpawnTimer();
             }
+
+            abilityScreen.pressedNumber = -1;
 
             return;
         }
@@ -367,11 +377,6 @@ public:
             points[i].Draw();
         }
 
-        if (player.showAbilityScreen)
-        {
-            abilityScreen.Draw();
-        }
-
         // Draw particles
         for (const auto &particle : particles)
         {
@@ -381,6 +386,11 @@ public:
         }
 
         DrawScore();
+
+        if (player.showAbilityScreen)
+        {
+            abilityScreen.Draw();
+        }
     };
 
     void SpanwExplosion(Vector2 position)

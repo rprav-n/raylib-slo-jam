@@ -290,11 +290,7 @@ void Player::Draw()
 
 void Player::ShootBullet()
 {
-    float bulletXPrecision = helper.GetRandomFloat(-0.2, 0.2);
-    if (hasHighPrecisionBullet)
-    {
-        bulletXPrecision = 0;
-    }
+    float bulletXPrecision = helper.GetRandomFloat(-bulltetXAccuracy, bulltetXAccuracy);
 
     if (hasDoubleGun)
     {
@@ -315,20 +311,15 @@ void Player::ShootBullet()
         {
             if (i < 0)
             {
-                bulletXPrecision = helper.GetRandomFloat(-0.2, -0.1);
+                bulletXPrecision = helper.GetRandomFloat(-bulltetXAccuracy, -0.1);
             }
             else if (i > 0)
             {
-                bulletXPrecision = helper.GetRandomFloat(0.1, 0.2);
+                bulletXPrecision = helper.GetRandomFloat(0.1, bulltetXAccuracy);
             }
             else
             {
-                bulletXPrecision = helper.GetRandomFloat(-0.2, 0.2);
-            }
-
-            if (hasHighPrecisionBullet)
-            {
-                bulletXPrecision = i * 0.1f;
+                bulletXPrecision = helper.GetRandomFloat(-bulltetXAccuracy, bulltetXAccuracy);
             }
 
             printf("bulletXPrecision %f\n", bulletXPrecision);
@@ -400,7 +391,7 @@ void Player::UpdateExpBarWidth()
     if (experienceBarSize.x >= MAX_EXP_BAR)
     {
         experienceBarSize.x = 0;
-        expIncreaseBy -= 10.f;
+        expIncreaseBy -= 25.f;
 
         if (expIncreaseBy < 10.f)
         {

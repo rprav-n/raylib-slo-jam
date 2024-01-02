@@ -104,9 +104,9 @@ void EnemySpawner::DecreaseSpawnTimer()
     {
         spawnTime = 1.f;
     }
-    basicEnemyOneSpeed += 100 * 0.25f;
-    basicEnemyTwoSpeed += 100 * 0.25f;
-    basicEnemyThreeSpeed += 100 * 0.25f;
-    basicEnemyFourSpeed += 100 * 0.25f;
-    basicEnemyFiveSpeed += 100 * 0.25f;
+    basicEnemyOneSpeed += 100 * 0.10f;
+    basicEnemyTwoSpeed += 100 * 0.10f;
+    basicEnemyThreeSpeed += 100 * 0.10f;
+    basicEnemyFourSpeed += 100 * 0.10f;
+    basicEnemyFiveSpeed += 100 * 0.10f;
 }
