@@ -52,7 +52,7 @@ void UpdateParticles()
 class Game
 {
 public:
-    GameState state = GameState::GAME_OVER;
+    GameState state = GameState::START;
     StartScreen startScreen = StartScreen();
     PauseScreen pauseScreen = PauseScreen();
     GameOverScreen gameOverScreen = GameOverScreen();
@@ -60,6 +60,7 @@ public:
 private:
     Font pixelFont = LoadFont("./assets/fonts/score.ttf");
     Texture2D explosionTexture = LoadTexture("./assets/graphics/explosion/red.png");
+    Texture2D crossHairTexture = LoadTexture("./assets/graphics/ui/cross_hair.png");
     vector<Explosion> explosions;
     vector<Point> points;
     Helper helper = Helper();
@@ -88,9 +89,18 @@ public:
         shouldCameraShake = val;
     };
 
+    void DrawMouseCursor()
+    {
+        // Draw mouse cursor - cross hair
+        Vector2 mousePos = GetMousePosition();
+        mousePos.x -= crossHairTexture.width / 2.f;
+        mousePos.y -= crossHairTexture.height / 2.f;
+        DrawTextureEx(crossHairTexture, mousePos, 0.f, Settings::SCALE, WHITE);
+    }
+
     Game()
     {
-        HideCursor(); // TODO
+        HideCursor();
         camera.target = Vector2{Settings::WINDOW_WIDTH / 2.0f, Settings::WINDOW_HEIGHT / 2.0f};
         camera.offset = Vector2{Settings::WINDOW_WIDTH / 2.0f, Settings::WINDOW_HEIGHT / 2.0f};
         camera.rotation = 0.0f;
@@ -136,10 +146,20 @@ public:
             if (transition.IsComplete())
             {
                 gameOverScreen.Update();
-                // if (IsKeyReleased(KEY_X))
-                // {
-                //     state = GameState::PLAY;
-                // }
+                if (IsKeyReleased(KEY_X))
+                {
+                    explosions = {};
+                    vector<Point> points;
+                    Helper helper = Helper();
+
+                    player = Player(Vector2{Settings::WINDOW_WIDTH / 2.f, Settings::WINDOW_HEIGHT / 2.f});
+
+                    enemySpawner = EnemySpawner();
+                    asteroidSpawner = AsteroidSpawner();
+                    score = 0;
+                    abilityScreen = AbilityScreen();
+                    state = GameState::PLAY;
+                }
             }
 
             break;
@@ -154,6 +174,7 @@ public:
         switch (state)
         {
         case GameState::START:
+            DrawMouseCursor();
             transition.Draw();
             if (transition.IsComplete())
             {
@@ -172,6 +193,7 @@ public:
             pauseScreen.Draw();
             break;
         case GameState::GAME_OVER:
+            DrawMouseCursor();
             transition.Draw();
             if (transition.IsComplete())
             {
@@ -390,6 +412,7 @@ public:
         if (player.showAbilityScreen)
         {
             abilityScreen.Draw();
+            DrawMouseCursor();
         }
     };
 
@@ -475,9 +498,6 @@ int main()
 
     Game game = Game();
 
-    // cross hair
-    Texture2D crossHairTexture = LoadTexture("./assets/graphics/ui/cross_hair.png");
-
     // Background
     Texture2D bgTexture = LoadTexture("./assets/graphics/environment/bg.png");
     float width = bgTexture.width;
@@ -548,12 +568,6 @@ int main()
             }
             EndMode2D();
         }
-
-        // Draw mouse cursor - cross hair
-        Vector2 mousePos = GetMousePosition();
-        mousePos.x -= crossHairTexture.width / 2.f;
-        mousePos.y -= crossHairTexture.height / 2.f;
-        DrawTextureEx(crossHairTexture, mousePos, 0.f, Settings::SCALE, WHITE);
 
         EndDrawing();
     }

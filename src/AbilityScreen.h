@@ -43,8 +43,8 @@ public:
 
     float current_x = 240.f;
     float current_y = 100.f;
-    const float spacing = 40.f;
-    const int columns = 2;
+    float spacing = 40.f;
+    int columns = 2;
     int columnCount = 0;
 
     int pressedNumber = -1;

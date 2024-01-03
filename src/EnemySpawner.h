@@ -29,7 +29,7 @@ public:
 
 private:
     bool shouldSpawn = true;
-    float spawnTime = 1.f;
+    float spawnTime = 2.f;
     float currentTimer = 0.f;
     Texture2D basicEnemy1 = LoadTexture("./assets/graphics/enemies/basic_enemy_1.png");
     Texture2D basicEnemy2 = LoadTexture("./assets/graphics/enemies/basic_enemy_2.png");
