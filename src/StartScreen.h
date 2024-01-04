@@ -18,6 +18,9 @@ private:
     Button playBtn = Button(playBtnTexture, {Settings::WINDOW_WIDTH / 2.f, Settings::WINDOW_HEIGHT / 2.f});
     Button closeBtn = Button(closeBtnTexture, {Settings::WINDOW_WIDTH / 2.f, Settings::WINDOW_HEIGHT / 2.f + 70.f});
 
+    float yPos = 200.f;
+    float speed = 25.f;
+
 public:
     void Update();
     void Draw();

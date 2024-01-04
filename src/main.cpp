@@ -174,12 +174,12 @@ public:
         switch (state)
         {
         case GameState::START:
-            DrawMouseCursor();
             transition.Draw();
             if (transition.IsComplete())
             {
                 startScreen.Draw();
             }
+            DrawMouseCursor();
             break;
         case GameState::PLAY:
             transition.Draw();
