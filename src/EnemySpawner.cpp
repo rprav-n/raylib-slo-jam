@@ -99,10 +99,10 @@ void EnemySpawner::Draw()
 
 void EnemySpawner::DecreaseSpawnTimer()
 {
-    spawnTime -= 0.2f;
-    if (spawnTime <= 1.f)
+    spawnTime -= 0.4f;
+    if (spawnTime <= 0.8f)
     {
-        spawnTime = 1.f;
+        spawnTime = 0.8f;
     }
     basicEnemyOneSpeed += 100 * 0.10f;
     basicEnemyTwoSpeed += 100 * 0.10f;
