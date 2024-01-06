@@ -21,7 +21,7 @@ Player::Player(Vector2 pos)
         dashingParticles[i].alpha = 100.0f;
     }
 
-    SetSoundVolume(laserSfx, 0.2f);
+    SetSoundVolume(laserSfx, 0.05f);
 }
 
 void Player::UpdateDashingParticles()
@@ -368,22 +368,18 @@ void Player::ReduceHealth()
 
     if (hasShied)
     {
-        shieldBarSize.x -= 10.f;
+        shieldBarSize.x -= 15.f;
         if (shieldBarSize.x <= 0.f)
         {
             hasShied = false;
-            // TODO play shield loss sound
         }
     }
     else
     {
-        healthBarSize.x -= 10.f;
+        healthBarSize.x -= 15.f;
         if (healthBarSize.x <= 0.f)
         {
             isDead = true;
-        }
-        else
-        {
         }
     }
 }
