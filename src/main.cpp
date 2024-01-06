@@ -73,7 +73,7 @@ private:
     vector<Point> points;
     Helper helper = Helper();
 
-    Player player = Player(Vector2{Settings::WINDOW_WIDTH / 2.f, Settings::WINDOW_HEIGHT / 2.f});
+    Player player = Player(Vector2{Settings::WINDOW_WIDTH / 2.f, Settings::WINDOW_HEIGHT - 150.f});
 
     EnemySpawner enemySpawner = EnemySpawner();
     AsteroidSpawner asteroidSpawner = AsteroidSpawner();
@@ -159,7 +159,7 @@ public:
                     explosions = {};
                     vector<Point> points;
 
-                    player = Player(Vector2{Settings::WINDOW_WIDTH / 2.f, Settings::WINDOW_HEIGHT / 2.f});
+                    player = Player(Vector2{Settings::WINDOW_WIDTH / 2.f, Settings::WINDOW_HEIGHT - 150.f});
 
                     enemySpawner = EnemySpawner();
                     asteroidSpawner = AsteroidSpawner();

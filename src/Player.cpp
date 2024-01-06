@@ -326,8 +326,6 @@ void Player::ShootBullet()
                 bulletXPrecision = helper.GetRandomFloat(-bulltetXAccuracy, bulltetXAccuracy);
             }
 
-            printf("bulletXPrecision %f\n", bulletXPrecision);
-
             Vector2 bulletDirection = Vector2Rotate({bulletXPrecision, -1}, DEG2RAD * rotation);
             Bullet bullet = Bullet(red_bullet, centerOrigin, bulletDirection, rotation, bulletSpeed, RED);
             bullets.push_back(bullet);
