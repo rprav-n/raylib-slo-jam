@@ -7,7 +7,7 @@ void AbilityScreen::Update()
 void AbilityScreen::Draw()
 {
 
-    DrawRectangleV({0, 0}, {Settings::WINDOW_WIDTH, Settings::WINDOW_HEIGHT}, Fade(BLACK, 200.f / 255.0f));
+    DrawRectangleV({0, 0}, {Settings::WINDOW_WIDTH, Settings::WINDOW_HEIGHT}, Fade(BLACK, 230.f / 255.0f));
 
     Vector2 textFontSize = MeasureTextEx(textFont, "Level Up: Hover and Select Your Upgrade!", 26.f, 0.f);
     DrawTextEx(textFont, "Level Up: Hover and Select Your Upgrade!", {Settings::WINDOW_WIDTH / 2.f - textFontSize.x / 2.f, 100.f}, 26.f, 0.f, WHITE);
