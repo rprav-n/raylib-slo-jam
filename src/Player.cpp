@@ -233,6 +233,8 @@ void Player::CheckCollisionBounds()
 
 void Player::Draw()
 {
+    DrawKeyboardTexture();
+
     DrawDashingParticles();
     for (int i = 0; i < bullets.size(); i++)
     {
@@ -416,4 +418,12 @@ void Player::KnockBack()
     float rotationInRadians = DEG2RAD * rotation;
     Vector2 knockbackVector = Vector2Rotate({0.0f, helper.GetRandomFloat(2.f, 4.f)}, rotationInRadians);
     position = Vector2Add(position, knockbackVector);
+}
+
+void Player::DrawKeyboardTexture()
+{
+    if (GetTime() < 10.f)
+    {
+        DrawTexturePro(keyboardTexture, keyboardRect, keyboardSrc, {0, 0}, 0.f, Fade(WHITE, 100.f / 255.f));
+    }
 }

@@ -43,10 +43,18 @@ void UpdateParticles()
         // particle.alpha *= 0.98f;  // Fade particles over time
     }
 
-    particles.erase(std::remove_if(particles.begin(), particles.end(),
-                                   [](const Particle &particle)
-                                   { return particle.radius < 0.1f; }),
-                    particles.end());
+    for (auto i = 0; i < particles.size();)
+    {
+        Particle p = particles[i];
+        if (p.radius < 0.1f)
+        {
+            particles.erase(particles.begin() + i);
+        }
+        else
+        {
+            ++i;
+        }
+    }
 }
 
 class Game
@@ -150,7 +158,6 @@ public:
                 {
                     explosions = {};
                     vector<Point> points;
-                    Helper helper = Helper();
 
                     player = Player(Vector2{Settings::WINDOW_WIDTH / 2.f, Settings::WINDOW_HEIGHT / 2.f});
 

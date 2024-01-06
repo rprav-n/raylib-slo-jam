@@ -42,6 +42,7 @@ public:
     void UpdateDashingParticles();
     void DrawDashingParticles();
     void Reset();
+    void DrawKeyboardTexture();
     float GetRadius()
     {
         return radius;
@@ -110,6 +111,10 @@ private:
     Texture2D shieldIconTexture = LoadTexture("./assets/graphics/ui/shield_icon.png");
     Texture2D shieldTexture = LoadTexture("./assets/graphics/shield/shield_sheet.png");
     Texture2D bombTexture = LoadTexture("./assets/graphics/ships/bomb.png");
+
+    Texture2D keyboardTexture = LoadTexture("./assets/graphics/ui/keyboard.png");
+    Rectangle keyboardRect = {0, 0, (float)keyboardTexture.width, (float)keyboardTexture.height};
+    Rectangle keyboardSrc = {100, 100, keyboardRect.width *Settings::SCALE, keyboardRect.height *Settings::SCALE};
 
     Sound laserSfx = LoadSound("./assets/sounds/laser_shoot.wav");
 
