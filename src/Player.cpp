@@ -20,6 +20,8 @@ Player::Player(Vector2 pos)
         dashingParticles[i].color = green;
         dashingParticles[i].alpha = 100.0f;
     }
+
+    SetSoundVolume(laserSfx, 0.2f);
 }
 
 void Player::UpdateDashingParticles()
