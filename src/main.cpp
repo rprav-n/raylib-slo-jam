@@ -280,7 +280,7 @@ public:
             else if (abilityScreen.pressedNumber == 8)
             {
                 // High Precision/Accuracy fire bullet
-                player.bulltetXAccuracy -= 0.5f;
+                player.bulltetXAccuracy -= 0.1f;
                 if (player.bulltetXAccuracy <= 0.0f)
                 {
                     player.bulltetXAccuracy = 0.0f;

@@ -32,7 +32,7 @@ private:
         {LoadTexture("./assets/graphics/ui/ability_ui/5.png"), "Full Heal", -1},
         {LoadTexture("./assets/graphics/ui/ability_ui/6.png"), "Sheild", -1},
         {LoadTexture("./assets/graphics/ui/ability_ui/7.png"), "Triple Shot", 1},
-        {LoadTexture("./assets/graphics/ui/ability_ui/8.png"), "Precision +10%", 4},
+        {LoadTexture("./assets/graphics/ui/ability_ui/8.png"), "Precision +10%", 5},
     };
 
     Font textFont = LoadFont("./assets/fonts/score.ttf");

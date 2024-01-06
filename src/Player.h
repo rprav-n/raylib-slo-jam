@@ -98,7 +98,7 @@ public:
     int burstCount = 1; // 1 is 1,1,1 | 2 - 1, 1,1, 1 and son on
 
     // High precision
-    float bulltetXAccuracy = 0.3f;
+    float bulltetXAccuracy = 0.5f;
 
     bool isDead = false;
 
