@@ -99,14 +99,14 @@ void EnemySpawner::Draw()
 
 void EnemySpawner::DecreaseSpawnTimer()
 {
-    spawnTime -= 0.4f;
-    if (spawnTime <= 0.8f)
+    spawnTime -= 0.3f;
+    if (spawnTime <= 1.f)
     {
-        spawnTime = 0.8f;
+        spawnTime = 1.f;
     }
-    basicEnemyOneSpeed += 100 * 0.15f;
-    basicEnemyTwoSpeed += 100 * 0.15f;
-    basicEnemyThreeSpeed += 100 * 0.15f;
-    basicEnemyFourSpeed += 100 * 0.15f;
-    basicEnemyFiveSpeed += 100 * 0.15f;
+    basicEnemyOneSpeed += 100 * 0.12f;
+    basicEnemyTwoSpeed += 100 * 0.12f;
+    basicEnemyThreeSpeed += 100 * 0.12f;
+    basicEnemyFourSpeed += 100 * 0.12f;
+    basicEnemyFiveSpeed += 100 * 0.12f;
 }
