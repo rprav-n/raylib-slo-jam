@@ -172,6 +172,9 @@ private:
     Vector2 experienceBarSize = {0.f, 16.f};
     Rectangle experienceBarBorderRect = {experienceBarPos.x, experienceBarPos.y, MAX_EXP_BAR, 16.f};
 
+    float controlUITime = 5.f;
+    float currentControlTime = 0.f;
+
     // Colors
     Color pink = GetColor(0xdb41c3ff);
     Color green = GetColor(0x71e392ff);

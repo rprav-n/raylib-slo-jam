@@ -420,9 +420,11 @@ void Player::DrawKeyboardTexture()
 {
 
     std::string levelString = "Lvl: " + std::to_string(level);
-
     DrawText(levelString.c_str(), experienceBarPos.x, experienceBarPos.y - 24, 20, WHITE);
-    if (GetTime() < 10.f)
+
+    currentControlTime += GetFrameTime();
+
+    if (currentControlTime < controlUITime)
     {
         DrawTexturePro(keyboardTexture, keyboardRect, keyboardSrc, {0, 0}, 0.f, Fade(WHITE, 100.f / 255.f));
     }
