@@ -42,12 +42,12 @@ Enemy::Enemy(Texture2D txtr, Vector2 spawnPosition, float spd, int type, float s
         score = 50;
         break;
     case 5: // m_e_1
-        health = GetRandomValue(4, 8);
+        health = GetRandomValue(3, 6);
         score = 100;
         canAutoShoot = true;
         break;
     case 6: // m_e_2
-        health = GetRandomValue(4, 8);
+        health = GetRandomValue(3, 6);
         score = 100;
         canAutoShoot = true;
         break;
