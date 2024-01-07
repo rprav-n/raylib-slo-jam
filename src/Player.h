@@ -6,6 +6,7 @@
 #include "Helper.h"
 #include <vector>
 #include <cstdio>
+#include <string>
 
 using namespace std;
 
@@ -163,7 +164,7 @@ private:
     Vector2 shieldCenterOrigin = {scaledShieldWidth / 2.f, scaledShieldHeight / 2.f};
 
     // Expirence
-    int level = 0;
+    int level = 1;
     float expIncreaseBy = 100.f;
 
     float MAX_EXP_BAR = Settings::WINDOW_WIDTH - 100.f;

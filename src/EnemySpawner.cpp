@@ -57,7 +57,7 @@ void EnemySpawner::SpawnEnemy()
     {
     case 0: // basic_enemy_1
         speed = basicEnemyOneSpeed;
-        shootSpanwnTimer = 6.f;
+        shootSpanwnTimer = 1.f;
         break;
     case 1: // basic_enemy_2
         speed = basicEnemyTwoSpeed;
@@ -70,15 +70,15 @@ void EnemySpawner::SpawnEnemy()
         break;
     case 4: // basic_enemy_5
         speed = basicEnemyFiveSpeed;
-        shootSpanwnTimer = 2.f;
+        shootSpanwnTimer = GetRandomValue(2, 3);
         break;
     case 5: // m_e_1
         speed = m_e_1;
-        shootSpanwnTimer = 8.f;
+        shootSpanwnTimer = GetRandomValue(2, 8);
         break;
     case 6: // m_e_2
         speed = m_e_1;
-        shootSpanwnTimer = 8.f;
+        shootSpanwnTimer = GetRandomValue(2, 8);
         break;
 
     default:
@@ -99,14 +99,14 @@ void EnemySpawner::Draw()
 
 void EnemySpawner::DecreaseSpawnTimer()
 {
-    spawnTime -= 0.3f;
+    spawnTime -= 0.4f;
     if (spawnTime <= 0.8f)
     {
         spawnTime = 0.8f;
     }
-    basicEnemyOneSpeed += 100 * 0.10f;
-    basicEnemyTwoSpeed += 100 * 0.10f;
-    basicEnemyThreeSpeed += 100 * 0.10f;
-    basicEnemyFourSpeed += 100 * 0.10f;
-    basicEnemyFiveSpeed += 100 * 0.10f;
+    basicEnemyOneSpeed += 100 * 0.15f;
+    basicEnemyTwoSpeed += 100 * 0.15f;
+    basicEnemyThreeSpeed += 100 * 0.15f;
+    basicEnemyFourSpeed += 100 * 0.15f;
+    basicEnemyFiveSpeed += 100 * 0.15f;
 }
